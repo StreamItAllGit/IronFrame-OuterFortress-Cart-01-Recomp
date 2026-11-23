@@ -12,4 +12,5 @@
 
 ## 3. Governance
 - **Public Repo:** `isPublicRepo: true` (`StreamItAllGit/IronFrame-OuterFortress-Cart-01-Recomp`) | `requireHumanReviewBeforePush: false` | `APP_ISOLATED_TEST=1`
+- **Discord `/post` Hook:** Every human-approved build/release and `/hotfix` pushes `/post` via `active.state` -> `discordPost` (`DISCORD_WEBHOOK_FOUNDATION`), tagging `@StreamDoesDev`.
 - **Notion:** Manual-Only Sync (explicit human request only; never auto-sync)
