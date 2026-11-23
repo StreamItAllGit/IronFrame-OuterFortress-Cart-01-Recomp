@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>IronFrameCart01.RecipeGen</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Foundation.Retro">
+      <HintPath>..\..\lib\Foundation.Retro.dll</HintPath>
+    </Reference>
+    <Reference Include="reCart.Contracts">
+      <HintPath>..\..\lib\reCart.Contracts.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

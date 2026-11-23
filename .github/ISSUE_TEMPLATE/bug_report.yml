@@ -1,0 +1,38 @@
+name: Bug Report
+description: Report a bug in IronFrame OuterFortress (Cart) 01 (Launcher, Installer, RecipeGen, or Module).
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "**Important:** Never upload or attach copyrighted ROM files (`.nes` / `.prg`) or personal save dumps."
+  - type: dropdown
+    id: package_kind
+    attributes:
+      label: Distribution Used
+      options:
+        - Online Setup (IronFrame-OuterFortress-Cart-01-Setup)
+        - Offline Setup (IronFrame-OuterFortress-Cart-01-Offline-Setup)
+        - Portable ZIP
+        - Built from Source (Dev\IronFrameCart01.slnx)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "v0.1.0"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What Happened?
+      description: Clear description of the unexpected behavior plus exact reproduction steps.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Verify Output & Log Excerpt
+      description: Paste output from `IronFrame-OuterFortress-Cart-01.exe --verify` or sanitized `logs\` excerpts (remove local usernames if needed).

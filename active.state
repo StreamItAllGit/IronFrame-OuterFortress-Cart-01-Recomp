@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "lifecycleState": "active",
+  "name": "IronFrame-OuterFortress-Cart-01-Recomp",
+  "projectGroup": "Personal",
+  "relativePath": "Personal/IronFrame-OuterFortress-Cart-01-Recomp",
+  "containerTier": "Tier A (4-Folder)",
+  "ecosystemTier": "Tier3_Standalone",
+  "appArchetype": "RECOMP",
+  "version": "0.1.0",
+  "activeMilestone": "0.2.0",
+  "goalMajorVersion": "1.0.0",
+  "stateChangedDate": "2026-11-23",
+  "lastVersionDate": "2026-11-23",
+  "productionSubpath": null,
+  "supersededBy": null,
+  "tasklistDetailLevel": 3,
+  "openTaskCount": 0,
+  "completedTaskCount": 10,
+  "openReportCount": 0,
+  "isPublicRepo": true,
+  "requireHumanReviewBeforePush": false,
+  "discordPost": {
+    "isEnabled": true,
+    "serverName": null,
+    "guildId": null,
+    "channelName": null,
+    "channelId": null,
+    "deliveryMethod": "webhook",
+    "secretEnvKey": "DISCORD_WEBHOOK_FOUNDATION",
+    "autoPostOnRelease": true
+  },
+  "gates": {
+    "isGate0ScopePassed": true,
+    "isGate1PlanPassed": true,
+    "isGate2BuildPassed": true,
+    "isInspecterVerified": true,
+    "isTessaSynced": true
+  },
+  "notes": "v0.1.0 completed: 50/50 unit tests (/warnaserror, incl. PrelaunchRegressionTests) + reCart v0.1.3 (94/94) + reEngine v0.6.2 (152/152) + Foundation v0.5.5; clean 2-member .recomp (499 schema seeds + jumpTables [0xC6B7], 0 hardcoded retail addresses); LauncherMediaDiscovery .nes/.prg/.zip/.7z discovery via MediaContainerExtractor + bundled tools\\7z.*; Stage 2 Sandbox E2E [S2-00]..[S2-09] passed (20,002-step lockstep mismatchedSteps=0, Media Gate 2.68s, Demo Cart, corrupt .7z banner, Cold .7z AOT 4.21s, Enter gameplay progression, F3 HUD w=623px 0px jitter, WAV peakPcm=16286, F5/F9 save, F1 settings persisted across relaunch, .zip/.prg/.nes/.7z matrix, standalone raw-ROM guard 2.18s); DualSetup8 audit_installer.ps1 Passed=True FindingCount=0.",
+  "updatedAtUtc": "2026-11-23T20:20:00.000Z"
+}

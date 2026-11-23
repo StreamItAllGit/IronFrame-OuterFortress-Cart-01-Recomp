@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "gameId": "ironframe-outerfortress-cart-01",
+  "platformId": "nes",
+  "serialNumber": "NES-ME-USA",
+  "upstreamResearchPath": "IronFrame-OuterFortress-Cart-01-Decomp",
+  "updatedAtUtc": "2026-11-23T08:35:00.000Z",
+  "requiredRomChecksums": [
+    {
+      "relativePath": "data/rom/NES-ME-USA.nes",
+      "fileSizeBytes": 131088,
+      "sha256Hex": "79095355436222161cb3841ff9b5c7a572e77af11461935e433bd6e8dfd0f164",
+      "crc32Hex": "25ba3d04",
+      "isRequired": true
+    },
+    {
+      "relativePath": "data/rom/NES-ME-USA.prg",
+      "fileSizeBytes": 131072,
+      "sha256Hex": "f6d29afbd7ddad33672852232791a396695de2e77dccb83088a8d6b139d8c9cb",
+      "crc32Hex": "817431ec",
+      "isRequired": false
+    }
+  ]
+}

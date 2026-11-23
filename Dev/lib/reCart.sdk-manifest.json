@@ -1,0 +1,81 @@
+{
+    "schemaVersion":  1,
+    "appId":  "recart",
+    "engineId":  "reCart",
+    "displayName":  "reCart",
+    "sdkVersion":  "0.1.3",
+    "version":  "0.1.3",
+    "updatedAtUtc":  "2026-11-23T21:01:45.928Z",
+    "artifacts":  [
+                      {
+                          "fileName":  "LICENSE",
+                          "fileSizeBytes":  16726,
+                          "sha256Hex":  "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
+                      },
+                      {
+                          "fileName":  "reCart.Compiler.deps.json",
+                          "fileSizeBytes":  2366,
+                          "sha256Hex":  "daa2184142d112e2aebea5931a8e6f52940e452dcd46472226a47656f4b7f3bd"
+                      },
+                      {
+                          "fileName":  "reCart.Compiler.dll",
+                          "fileSizeBytes":  110592,
+                          "sha256Hex":  "d1aa1ab2241201b9842adcc03eebd6dc2daded95c665baa2955741c15ee76e19"
+                      },
+                      {
+                          "fileName":  "reCart.Compiler.xml",
+                          "fileSizeBytes":  11849,
+                          "sha256Hex":  "3d88cd97b9b949a57bd231ef13893195f8348f1abc35698f894cef58501461a3"
+                      },
+                      {
+                          "fileName":  "reCart.Contracts.deps.json",
+                          "fileSizeBytes":  1901,
+                          "sha256Hex":  "41ea824f7688fba78816d5b028d5a461e476c75f3818023c14d32f26a4455111"
+                      },
+                      {
+                          "fileName":  "reCart.Contracts.dll",
+                          "fileSizeBytes":  52736,
+                          "sha256Hex":  "97e3103f8aa83098f69f0e3abc0671204537461397ede0e14e0509bdefe64e1c"
+                      },
+                      {
+                          "fileName":  "reCart.Contracts.xml",
+                          "fileSizeBytes":  58848,
+                          "sha256Hex":  "2eda51ce294eec2938b4b8976ead21ca4985fa459d3272ecfd54d3434ab385cf"
+                      },
+                      {
+                          "fileName":  "reCart.Core.deps.json",
+                          "fileSizeBytes":  2292,
+                          "sha256Hex":  "d091110cb4bc8fa911fd2a3e028a1a6a7ff7ca954379a3677b6c2c18f051c28d"
+                      },
+                      {
+                          "fileName":  "reCart.Core.dll",
+                          "fileSizeBytes":  72192,
+                          "sha256Hex":  "69dd00531b3434d96a0e71beaf79ca89dfe389344051a2d288cfd96d666a73b9"
+                      },
+                      {
+                          "fileName":  "reCart.Core.xml",
+                          "fileSizeBytes":  38069,
+                          "sha256Hex":  "46610c82d54d052f9b4bfca3178976702e970c8bf5042c4e259e5dafa9744518"
+                      },
+                      {
+                          "fileName":  "reCart.Decomp.deps.json",
+                          "fileSizeBytes":  2360,
+                          "sha256Hex":  "b087b5e4e27435ecca73e64786f64de90bd69f122a32056116362c2eea9bd491"
+                      },
+                      {
+                          "fileName":  "reCart.Decomp.dll",
+                          "fileSizeBytes":  156160,
+                          "sha256Hex":  "9b68ba0e40c054b6aef0a41de6e94fbf6352cd12f92b8c35c35b5553180dade1"
+                      },
+                      {
+                          "fileName":  "reCart.Decomp.xml",
+                          "fileSizeBytes":  90984,
+                          "sha256Hex":  "59eeb31d6d4c2b86f16fac7788f1bcb72306c7da462b1f77f067faa3c165c04f"
+                      },
+                      {
+                          "fileName":  "THIRDPARTY_LICENSES.txt",
+                          "fileSizeBytes":  919,
+                          "sha256Hex":  "5aa58eba9eebada999702c80e6d62bf9225eb8544de1e6133c30eb77b32dedba"
+                      }
+                  ]
+}

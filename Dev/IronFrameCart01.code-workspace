@@ -1,0 +1,67 @@
+{
+  "folders": [
+    {
+      "name": "1. IronFrame OuterFortress (Cart) 01 — Module Dev",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "python",
+    "files.eol": "\n",
+    "files.exclude": {
+      "**/bin": true,
+      "**/obj": true,
+      "**/__pycache__": true,
+      "**/.cache": true,
+      "**/[Dd]esktop.ini": true
+    }
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build IronFrame OuterFortress Recomp (.NET)",
+        "type": "shell",
+        "command": "dotnet",
+        "args": [
+          "build",
+          "IronFrameCart01.slnx",
+          "-c",
+          "Release",
+          "/warnaserror"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "Test IronFrame OuterFortress Recomp (.NET, Isolated)",
+        "type": "shell",
+        "command": "dotnet",
+        "args": [
+          "test",
+          "IronFrameCart01.slnx",
+          "-c",
+          "Release",
+          "/warnaserror"
+        ],
+        "options": {
+          "env": {
+            "APP_ISOLATED_TEST": "1"
+          }
+        },
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        }
+      }
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-dotnettools.csdevkit",
+      "ms-python.python"
+    ]
+  }
+}

@@ -1,0 +1,915 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>reCart.Contracts</name>
+    </assembly>
+    <members>
+        <member name="T:reCart.Contracts.CartAotRecipeSpec">
+            <summary>
+            Clean-room <c>aot-recipe.json</c> descriptor packaged alongside <c>module.recomp.json</c> inside zero-binary <c>.recomp</c> archives.
+            Supplies structural entry seeds so <c>reCart.Compiler</c> lifts the user's BYO ROM locally into <c>&lt;dataDir&gt;\cache\</c>.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.SchemaVersion">
+            <summary>Recipe schema revision (<c>1</c>+).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.ModuleId">
+            <summary>Target lowercase-kebab cartridge module identifier matching <c>module.recomp.json</c>.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.PlatformId">
+            <summary>Target platform identifier (<c>nes</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.MapperId">
+            <summary>Target iNES / NES 2.0 mapper identifier.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.SubmapperId">
+            <summary>Target NES 2.0 submapper identifier.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.EntryAddresses">
+            <summary>Flat list of hex CPU entry addresses seeded into the fixed bank when bank indices are omitted.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.Seeds">
+            <summary>Bank-qualified structural seed entries emitted by offline oracle schema tooling.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.JumpTables">
+            <summary>Inline jump-table dispatch hints (e.g., <c>$C6B7</c> RTS dispatch tables).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.Trampolines">
+            <summary>Cross-bank PRG trampoline descriptors (e.g., UNROM <c>$C932..$C958</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.MemoryWatches">
+            <summary>Logical WRAM telemetry watch regions without retail symbol leakage.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartAotRecipeSpec.ExtensionData">
+            <summary>Extension bag preserving forward-compatible recipe metadata.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartAotRecipeSpec.Deserialize(System.String)">
+            <summary>Deserializes a UTF-8 JSON payload into a <see cref="T:reCart.Contracts.CartAotRecipeSpec"/>.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartAotRecipeSpec.Serialize">
+            <summary>Serializes this recipe specification to camelCase UTF-8 JSON.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartAotRecipeSpec.Validate">
+            <summary>Validates required identity fields and well-formed hex addresses.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartAotRecipeSpec.ToSeedTuples(System.UInt32)">
+            <summary>Resolves distinct ordered <c>(prgBank, address)</c> seed tuples for static lifting.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartAotRecipeSpec.ParseHexAddress(System.String)">
+            <summary>Parses a 16-bit address formatted as <c>0xC001</c>, <c>$C001</c>, or <c>C001</c>.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartAotRecipeSeed">
+            <summary>Represents one bank-qualified clean-room subroutine seed inside <see cref="T:reCart.Contracts.CartAotRecipeSpec"/>.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartAotRecipeSeed.#ctor(System.Nullable{System.UInt32},System.String,System.String,System.String)">
+            <summary>Represents one bank-qualified clean-room subroutine seed inside <see cref="T:reCart.Contracts.CartAotRecipeSpec"/>.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartAotJumpTableHint">
+            <summary>Represents an inline jump-table dispatch hint inside <see cref="T:reCart.Contracts.CartAotRecipeSpec"/>.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartAotJumpTableHint.#ctor(System.UInt32,System.String,System.String)">
+            <summary>Represents an inline jump-table dispatch hint inside <see cref="T:reCart.Contracts.CartAotRecipeSpec"/>.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartAotTrampolineHint">
+            <summary>Represents a cross-bank trampoline hint inside <see cref="T:reCart.Contracts.CartAotRecipeSpec"/>.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartAotTrampolineHint.#ctor(System.String,System.Nullable{System.UInt32},System.String)">
+            <summary>Represents a cross-bank trampoline hint inside <see cref="T:reCart.Contracts.CartAotRecipeSpec"/>.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartAotMemoryWatchHint">
+            <summary>Represents a WRAM range descriptor exposed to diagnostic overlays inside <see cref="T:reCart.Contracts.CartAotRecipeSpec"/>.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartAotMemoryWatchHint.#ctor(System.String,System.String,System.Int32)">
+            <summary>Represents a WRAM range descriptor exposed to diagnostic overlays inside <see cref="T:reCart.Contracts.CartAotRecipeSpec"/>.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartEngineConstants">
+            <summary>
+            Canonical engine identity, SDK protocol metadata, timing, and clean-room safety constants for <c>reCart</c>.
+            </summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.AppId">
+            <summary>Lowercase canonical application identifier.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.DisplayName">
+            <summary>Title-case product display name.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.EngineId">
+            <summary>Canonical engine identifier registered in <c>reEngine</c> and Dev Bible Standard 18.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartEngineConstants.LegacyAliasEngineIds">
+            <summary>3-way legacy/alias identifiers resolved symmetrically by <c>reEngine v0.5.0</c>.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.PlatformId">
+            <summary>Canonical hardware platform identifier shared across <c>.decomp</c> and <c>.recomp</c> manifests.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.Version">
+            <summary>Active <c>reCart</c> engine semantic version.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.CompatibleEngineTrack">
+            <summary>Primary engine track advertised by module and installer manifests.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartEngineConstants.SupportedEngineTracks">
+            <summary>Default ordered list of compatible engine tracks supported by <c>reCart 0.1.x</c> modules.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.HostProtocolVersion">
+            <summary>Implemented <c>reEngine.Host</c> protocol version used for CLI/flag routing (<c>&gt;= 0.3.0</c>).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.MinSuiteVersion">
+            <summary>Minimum compatible <c>reEngine</c> suite router version.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.StudioName">
+            <summary>Canonical studio umbrella folder under <c>%LOCALAPPDATA%\Programs\</c>.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.SuiteName">
+            <summary>Canonical suite folder name under the studio root.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.SuiteId">
+            <summary>Canonical installer suite identifier (Standard 18: <c>suiteId</c>).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.UmbrellaSubpath">
+            <summary>Canonical umbrella subpath for side-by-side suite engine installations.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.DefaultInstallProfile">
+            <summary>Default installer profile identifier.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.BrandAccentHex">
+            <summary>Brand accent color hex (Warm Amber).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.NtscFrameRateHz">
+            <summary>Native NTSC PPU frame cadence in hertz.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.FrameWidth">
+            <summary>Native PPU horizontal resolution in pixels.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.FrameHeight">
+            <summary>Native PPU vertical resolution in pixels.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.DefaultAudioSampleRateHz">
+            <summary>Default stereo PCM output sample rate in hertz.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartEngineConstants.AllowAutoStart">
+            <summary>Enforces zero-daemon execution with zero background services or Windows Startup entries.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartRenderBackendIds">
+            <summary>
+            Canonical clean-room render backend identifiers aligned with <c>reEngine.Host v0.5.0</c>.
+            </summary>
+        </member>
+        <member name="F:reCart.Contracts.CartRenderBackendIds.OpenGl">
+            <summary>Hardware OpenGL 3.3 Core presenter backend.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartRenderBackendIds.Vulkan">
+            <summary>Hardware Vulkan 1.3 presenter backend.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartRenderBackendIds.DirectX">
+            <summary>Hardware DirectX 12 presenter backend.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartRenderBackendIds.ParallelCpu">
+            <summary>Deterministic 16-pixel band parallel CPU presenter backend.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartRenderBackendIds.Software">
+            <summary>Deterministic SDL3 software texture presenter backend.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartRenderBackendIds.NormalizeCli(System.String)">
+            <summary>Normalizes CLI backend aliases (for example <c>dx12</c> / <c>d3d12</c> -&gt; <c>directx</c>).</summary>
+            <param name="raw">User or manifest backend identifier.</param>
+            <returns>Canonical backend identifier defaulting to <see cref="F:reCart.Contracts.CartRenderBackendIds.OpenGl"/>.</returns>
+        </member>
+        <member name="T:reCart.Contracts.CartExecutionTierMode">
+            <summary>
+            Supported execution tiers for <c>reCart</c> (Standard 24 static recompilation primary model).
+            </summary>
+        </member>
+        <member name="F:reCart.Contracts.CartExecutionTierMode.StaticAotOnly">
+            <summary>Pure statically AOT-compiled execution; fails closed if an unlifted PC is encountered.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartExecutionTierMode.AotWithJitFallback">
+            <summary>Reserved for <c>v0.2.0</c> Tier 3 RyuJIT bring-up fallback on unlifted blocks.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartExecutionTierMode.AotWithThreadedIr">
+            <summary>Reserved for <c>v0.2.0</c> Tier 3 zero-RWX threaded IR bring-up fallback.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartExecutionTierMode.JitBringup">
+            <summary>Reserved for <c>v0.2.0</c> explicit bring-up JIT trace collection.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartExecutionTierMode.InterpreterOracle">
+            <summary>Quarantined Tier 4 reference interpreter strictly for differential lockstep verification.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartExecutionTierModeCodec">
+            <summary>
+            Parses and formats <see cref="T:reCart.Contracts.CartExecutionTierMode"/> values cleanly across CLI and manifests.
+            </summary>
+        </member>
+        <member name="M:reCart.Contracts.CartExecutionTierModeCodec.Parse(System.String)">
+            <summary>Parses a CLI or manifest execution tier token strictly, defaulting to <see cref="F:reCart.Contracts.CartExecutionTierMode.StaticAotOnly"/>.</summary>
+            <param name="raw">Raw execution tier string.</param>
+            <returns>Parsed <see cref="T:reCart.Contracts.CartExecutionTierMode"/>.</returns>
+        </member>
+        <member name="M:reCart.Contracts.CartExecutionTierModeCodec.ToCanonicalId(reCart.Contracts.CartExecutionTierMode)">
+            <summary>Returns the canonical camelCase identifier for <paramref name="mode"/>.</summary>
+            <param name="mode">Execution tier mode.</param>
+            <returns>Canonical camelCase identifier string.</returns>
+        </member>
+        <member name="M:reCart.Contracts.CartExecutionTierModeCodec.ToDisplayLabel(reCart.Contracts.CartExecutionTierMode)">
+            <summary>Returns the concise human-facing HUD label for <paramref name="mode"/>.</summary>
+            <param name="mode">Execution tier mode.</param>
+            <returns>HUD display badge text.</returns>
+        </member>
+        <member name="T:reCart.Contracts.ICartModuleManifest">
+            <summary>
+            Clean-room <c>.recomp</c> cartridge module manifest contract aligned with Dev Bible Standard 18.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.EngineId">
+            <summary>Target engine identifier (<c>reCart</c> or legacy aliases <c>reCartOne</c>/<c>reNes</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.EngineVersion">
+            <summary>Minimum compatible engine semantic version.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.CompatibleEngineTrack">
+            <summary>Primary compatible engine version track (<c>0.1.x</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.SupportedEngineTracks">
+            <summary>Ordered compatible engine version tracks checked before <see cref="P:reCart.Contracts.ICartModuleManifest.CompatibleEngineTrack"/>.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.PreloadRomDir">
+            <summary>Relative preload directory containing BYO cartridge media (defaults to <c>data/rom</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.ModuleTypeName">
+            <summary>Fully qualified <see cref="T:reCart.Contracts.ICartRecompGameModule"/> implementation type name.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.SerialNumber">
+            <summary>Optional cartridge serial or catalog code.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.EntryAssembly">
+            <summary>Optional entry C# source or compiled assembly path.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.DefaultFramerateMode">
+            <summary>Default timing mode for this module.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.VideoRegionStandard">
+            <summary>Declared video region standard (<c>auto</c>, <c>ntsc</c>, <c>pal</c>, <c>dendy</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.MapperId">
+            <summary>Numeric iNES / NES 2.0 mapper identifier (<c>0..4095</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartModuleManifest.SubmapperId">
+            <summary>Numeric NES 2.0 submapper identifier (<c>0..15</c>).</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartPackageManifest">
+            <summary>
+            JSON-serializable clean-room <c>module.recomp.json</c> manifest model and validator.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.SchemaVersion">
+            <summary>Manifest schema revision (<c>1</c>+).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.ModuleId">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.Title">
+            <summary>Human-facing module title.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.DisplayName">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.PlatformId">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.Version">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.EngineId">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.EngineVersion">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.CompatibleEngineTrack">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.SupportedEngineTracks">
+            <summary>Ordered compatible engine version tracks.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.PreloadRomDir">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.ModuleTypeName">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.SerialNumber">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.EntryAssembly">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.BackendId">
+            <summary>Preferred clean-room render backend ID.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.AspectRatioMode">
+            <summary>Preferred aspect ratio presentation mode.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.ExecutionTierMode">
+            <summary>Preferred execution tier identifier (<c>staticAotOnly</c> primary).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.VideoRegionStandardName">
+            <summary>Preferred video region token (<c>auto</c>, <c>ntsc</c>, <c>pal</c>, <c>dendy</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.VideoRegionStandard">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.MapperId">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.SubmapperId">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.DefaultFramerateMode">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.RequiredDiscChecksums">
+            <summary>Required user BYO cartridge checksums verified prior to launch.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.ResolvedPackagePath">
+            <summary>Optional resolved on-disk package path (not serialized).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartPackageManifest.ExtensionData">
+            <summary>Forward-compatible extension bag preserving unknown properties across round-trips.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartPackageManifest.Deserialize(System.String)">
+            <summary>Deserializes a UTF-8 JSON string into a <see cref="T:reCart.Contracts.CartPackageManifest"/>.</summary>
+            <param name="json">Raw JSON manifest payload.</param>
+            <returns>Deserialized manifest instance.</returns>
+        </member>
+        <member name="M:reCart.Contracts.CartPackageManifest.Serialize">
+            <summary>Serializes this manifest into formatted camelCase JSON.</summary>
+            <returns>Formatted UTF-8 JSON string.</returns>
+        </member>
+        <member name="M:reCart.Contracts.CartPackageManifest.Validate">
+            <summary>Validates mandatory identity fields (<c>moduleId</c>, <c>engineId</c>, <c>version</c>).</summary>
+        </member>
+        <member name="T:reCart.Contracts.ICartRecompGameModule">
+            <summary>
+            Execution ABI implemented by statically lifted AOT cartridge assemblies loaded by <c>reCart</c>.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartRecompGameModule.ModuleId">
+            <summary>Canonical lowercase-kebab module identifier.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartRecompGameModule.MapperId">
+            <summary>Required numeric iNES / NES 2.0 mapper identifier.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartRecompGameModule.SubmapperId">
+            <summary>Required numeric NES 2.0 submapper identifier.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartRecompGameModule.SupportsLockstepOracle">
+            <summary>Whether differential lockstep verification against <c>interpreterOracle</c> is supported.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartRecompGameModule.BindHost(reCart.Contracts.IReCartHost,reCart.Contracts.ICartMemoryBus,reCart.Contracts.ICartCpuContext,reCart.Contracts.ICartPpuController,reCart.Contracts.ICartApuSink)">
+            <summary>Binds host subsystems prior to reset vector execution.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartRecompGameModule.ExecuteResetVector">
+            <summary>Executes the statically lifted reset routine.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartRecompGameModule.TryDispatch(System.UInt32,System.UInt16)">
+            <summary>Dispatches statically lifted execution at <paramref name="prgBank"/> and <paramref name="address"/>.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartRecompGameModule.HandleNmi">
+            <summary>Invokes the lifted VBlank <c>NMI</c> handler routine.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartRecompGameModule.HandleIrq">
+            <summary>Invokes the lifted maskable <c>IRQ</c> handler routine.</summary>
+        </member>
+        <member name="T:reCart.Contracts.IReCartHost">
+            <summary>
+            Platform host surface exposed to statically compiled cartridge game modules.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.IReCartHost.Bus">
+            <summary>Active <c>2A03</c> CPU memory bus and mapper banking controller.</summary>
+        </member>
+        <member name="P:reCart.Contracts.IReCartHost.Cpu">
+            <summary>Active <c>2A03</c> CPU register context.</summary>
+        </member>
+        <member name="P:reCart.Contracts.IReCartHost.Ppu">
+            <summary>Active <c>2C02</c> PPU controller and framebuffer source.</summary>
+        </member>
+        <member name="P:reCart.Contracts.IReCartHost.Apu">
+            <summary>Active <c>2A03</c> APU audio sink.</summary>
+        </member>
+        <member name="P:reCart.Contracts.IReCartHost.Manifest">
+            <summary>Validated clean-room manifest for the currently mounted cartridge.</summary>
+        </member>
+        <member name="P:reCart.Contracts.IReCartHost.TimingProfile">
+            <summary>Active clock/scanline timing profile.</summary>
+        </member>
+        <member name="P:reCart.Contracts.IReCartHost.PreloadRomDirectory">
+            <summary>Resolved local user BYO media directory (<c>data\rom\</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.IReCartHost.SaveDirectory">
+            <summary>Resolved writable save directory.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartExecutionDiagnostics">
+            <summary>
+            Mutable runtime execution telemetry counters distinguishing static AOT vs quarantined oracle execution.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.CartExecutionDiagnostics.StaticDispatchCount">
+            <summary>Count of frames or basic blocks dispatched through compiled AOT code.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartExecutionDiagnostics.InterpreterDispatchCount">
+            <summary>Count of steps executed inside quarantined Tier 4 <c>interpreterOracle</c> mode.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartExecutionDiagnostics.UnliftedTrapCount">
+            <summary>Count of fail-closed unlifted PC trap events recorded.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartExecutionDiagnostics.AudioDroppedSamples">
+            <summary>Count of audio sample frames dropped by the ring buffer.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartExecutionDiagnostics.FramesRendered">
+            <summary>Total frames presented.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartPrgHeaderSynthesizer">
+            <summary>
+            Wraps verified headerless <c>.prg</c> cartridge dumps (e.g., <c>131,072</c>-byte CHR-RAM carts)
+            with a deterministic 16-byte iNES/NES 2.0 container header in memory after raw SHA-256 verification.
+            </summary>
+        </member>
+        <member name="F:reCart.Contracts.CartPrgHeaderSynthesizer.PrgBankSizeBytes">
+            <summary>Standard PRG bank granularity in bytes (<c>16 KB</c>).</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartPrgHeaderSynthesizer.HasInesMagic(System.ReadOnlySpan{System.Byte})">
+            <summary>Returns whether <paramref name="bytes"/> already starts with the 4-byte iNES magic signature.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartPrgHeaderSynthesizer.SynthesizeIfHeaderless(System.Byte[],System.UInt16,System.Byte,reCart.Contracts.CartMirroringMode,reCart.Contracts.CartVideoRegionStandard)">
+            <summary>
+            Returns <paramref name="rawBytes"/> untouched when already an iNES container, or prepends a canonical 16-byte
+            iNES/NES 2.0 header for headerless CHR-RAM PRG payloads whose byte count is an exact multiple of 16 KB.
+            </summary>
+        </member>
+        <member name="T:reCart.Contracts.CartVideoRegionStandard">
+            <summary>
+            Target video region &amp; clock standard (Dev Bible Standard 18: <c>videoRegionStandard</c>).
+            </summary>
+        </member>
+        <member name="F:reCart.Contracts.CartVideoRegionStandard.Auto">
+            <summary>Auto-detect from NES 2.0 header / manifest metadata (defaults to NTSC when unspecified).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartVideoRegionStandard.Ntsc">
+            <summary>60.0988 Hz RP2A03G/RP2C02G NTSC timing (262 scanlines).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartVideoRegionStandard.Pal">
+            <summary>50.0070 Hz RP2A07/RP2C07 PAL timing (312 scanlines).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartVideoRegionStandard.Dendy">
+            <summary>50.0070 Hz UMC UA6538 Dendy timing (312 scanlines with 240-NMI split).</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartVideoRegionCodec">
+            <summary>
+            Normalizes and formats <see cref="T:reCart.Contracts.CartVideoRegionStandard"/> tokens cleanly.
+            </summary>
+        </member>
+        <member name="M:reCart.Contracts.CartVideoRegionCodec.Parse(System.String)">
+            <summary>Parses a region string token, defaulting to <see cref="F:reCart.Contracts.CartVideoRegionStandard.Auto"/>.</summary>
+            <param name="raw">Raw CLI or JSON region token.</param>
+            <returns>Normalized <see cref="T:reCart.Contracts.CartVideoRegionStandard"/>.</returns>
+        </member>
+        <member name="M:reCart.Contracts.CartVideoRegionCodec.ToCanonicalId(reCart.Contracts.CartVideoRegionStandard)">
+            <summary>Converts <paramref name="region"/> to its canonical camelCase JSON string.</summary>
+            <param name="region">Region standard enum.</param>
+            <returns>Canonical region token.</returns>
+        </member>
+        <member name="T:reCart.Contracts.CartRegionTimingProfile">
+            <summary>
+            Clock rates, scanline counts, and pixel aspect geometry for a resolved video standard.
+            </summary>
+            <param name="Name">Human-readable timing profile label.</param>
+            <param name="Region">Resolved concrete <see cref="T:reCart.Contracts.CartVideoRegionStandard"/>.</param>
+            <param name="ScanlinesPerFrame">Total scanlines per frame (<c>262</c> NTSC, <c>312</c> PAL/Dendy).</param>
+            <param name="VBlankStartScanline">First VBlank NMI scanline (<c>241</c> NTSC/PAL, <c>291</c> Dendy).</param>
+            <param name="DotsPerScanline">PPU dots per scanline (<c>341</c>).</param>
+            <param name="CpuClockHz">CPU master frequency in Hz.</param>
+            <param name="FrameRateHz">Nominal frame cadence in Hz.</param>
+            <param name="DefaultPixelAspectRatio">Hardware pixel aspect ratio (<c>8/7</c> NTSC, <c>1.3862</c> PAL).</param>
+        </member>
+        <member name="M:reCart.Contracts.CartRegionTimingProfile.#ctor(System.String,reCart.Contracts.CartVideoRegionStandard,System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double)">
+            <summary>
+            Clock rates, scanline counts, and pixel aspect geometry for a resolved video standard.
+            </summary>
+            <param name="Name">Human-readable timing profile label.</param>
+            <param name="Region">Resolved concrete <see cref="T:reCart.Contracts.CartVideoRegionStandard"/>.</param>
+            <param name="ScanlinesPerFrame">Total scanlines per frame (<c>262</c> NTSC, <c>312</c> PAL/Dendy).</param>
+            <param name="VBlankStartScanline">First VBlank NMI scanline (<c>241</c> NTSC/PAL, <c>291</c> Dendy).</param>
+            <param name="DotsPerScanline">PPU dots per scanline (<c>341</c>).</param>
+            <param name="CpuClockHz">CPU master frequency in Hz.</param>
+            <param name="FrameRateHz">Nominal frame cadence in Hz.</param>
+            <param name="DefaultPixelAspectRatio">Hardware pixel aspect ratio (<c>8/7</c> NTSC, <c>1.3862</c> PAL).</param>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.Name">
+            <summary>Human-readable timing profile label.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.Region">
+            <summary>Resolved concrete <see cref="T:reCart.Contracts.CartVideoRegionStandard"/>.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.ScanlinesPerFrame">
+            <summary>Total scanlines per frame (<c>262</c> NTSC, <c>312</c> PAL/Dendy).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.VBlankStartScanline">
+            <summary>First VBlank NMI scanline (<c>241</c> NTSC/PAL, <c>291</c> Dendy).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.DotsPerScanline">
+            <summary>PPU dots per scanline (<c>341</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.CpuClockHz">
+            <summary>CPU master frequency in Hz.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.FrameRateHz">
+            <summary>Nominal frame cadence in Hz.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.DefaultPixelAspectRatio">
+            <summary>Hardware pixel aspect ratio (<c>8/7</c> NTSC, <c>1.3862</c> PAL).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.Ntsc">
+            <summary>Canonical RP2A03/RP2C02 NTSC timing profile.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.Pal">
+            <summary>Canonical RP2A07/RP2C07 PAL timing profile (<c>v0.2.0+</c> activation).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRegionTimingProfile.Dendy">
+            <summary>Canonical Dendy hybrid timing profile (<c>v0.2.0+</c> activation).</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartRegionTimingProfile.ForRegion(reCart.Contracts.CartVideoRegionStandard)">
+            <summary>Resolves the timing profile for <paramref name="region"/> (<c>Auto</c> resolves to <see cref="P:reCart.Contracts.CartRegionTimingProfile.Ntsc"/> in v0.1.0).</summary>
+            <param name="region">Requested or header-detected region standard.</param>
+            <returns>Concrete timing profile.</returns>
+        </member>
+        <member name="T:reCart.Contracts.CartMirroringMode">
+            <summary>
+            Nametable mirroring configuration controlled by cartridge wiring or mapper registers.
+            </summary>
+        </member>
+        <member name="F:reCart.Contracts.CartMirroringMode.Horizontal">
+            <summary>Vertical arrangement / Horizontal mirroring (<c>CIRAM A10 = PPU A11</c>).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartMirroringMode.Vertical">
+            <summary>Horizontal arrangement / Vertical mirroring (<c>CIRAM A10 = PPU A10</c>).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartMirroringMode.SingleScreenLower">
+            <summary>Single-screen lower nametable bank (<c>CIRAM A10 = 0</c>).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartMirroringMode.SingleScreenUpper">
+            <summary>Single-screen upper nametable bank (<c>CIRAM A10 = 1</c>).</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartMirroringMode.FourScreen">
+            <summary>Four-screen cartridge-provided extended nametable RAM.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartRomHeader">
+            <summary>
+            Parsed iNES 1.0 or NES 2.0 header geometry using extensible numeric mapper and submapper IDs.
+            </summary>
+            <param name="MapperId">Numeric 12-bit iNES/NES 2.0 mapper identifier (<c>0..4095</c>).</param>
+            <param name="SubmapperId">Numeric NES 2.0 submapper identifier (<c>0..15</c>).</param>
+            <param name="PrgRomSizeBytes">Total PRG-ROM payload length in bytes.</param>
+            <param name="ChrRomSizeBytes">Total CHR-ROM payload length in bytes (<c>0</c> selects CHR-RAM).</param>
+            <param name="PrgRamSizeBytes">Volatile or battery-backed PRG-RAM size in bytes.</param>
+            <param name="ChrRamSizeBytes">CHR-RAM size in bytes when <see cref="P:reCart.Contracts.CartRomHeader.ChrRomSizeBytes"/> is zero.</param>
+            <param name="HasTrainer">Whether a 512-byte legacy trainer block precedes PRG-ROM.</param>
+            <param name="HasBatteryBackedRam">Whether battery-backed persistent PRG-RAM is declared.</param>
+            <param name="IsNes20">Whether the header carries a valid NES 2.0 signature.</param>
+            <param name="Mirroring">Initial hardware nametable mirroring arrangement.</param>
+            <param name="VideoRegionStandard">Detected video timing standard declared in the header.</param>
+        </member>
+        <member name="M:reCart.Contracts.CartRomHeader.#ctor(System.UInt16,System.Byte,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,reCart.Contracts.CartMirroringMode,reCart.Contracts.CartVideoRegionStandard)">
+            <summary>
+            Parsed iNES 1.0 or NES 2.0 header geometry using extensible numeric mapper and submapper IDs.
+            </summary>
+            <param name="MapperId">Numeric 12-bit iNES/NES 2.0 mapper identifier (<c>0..4095</c>).</param>
+            <param name="SubmapperId">Numeric NES 2.0 submapper identifier (<c>0..15</c>).</param>
+            <param name="PrgRomSizeBytes">Total PRG-ROM payload length in bytes.</param>
+            <param name="ChrRomSizeBytes">Total CHR-ROM payload length in bytes (<c>0</c> selects CHR-RAM).</param>
+            <param name="PrgRamSizeBytes">Volatile or battery-backed PRG-RAM size in bytes.</param>
+            <param name="ChrRamSizeBytes">CHR-RAM size in bytes when <see cref="P:reCart.Contracts.CartRomHeader.ChrRomSizeBytes"/> is zero.</param>
+            <param name="HasTrainer">Whether a 512-byte legacy trainer block precedes PRG-ROM.</param>
+            <param name="HasBatteryBackedRam">Whether battery-backed persistent PRG-RAM is declared.</param>
+            <param name="IsNes20">Whether the header carries a valid NES 2.0 signature.</param>
+            <param name="Mirroring">Initial hardware nametable mirroring arrangement.</param>
+            <param name="VideoRegionStandard">Detected video timing standard declared in the header.</param>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.MapperId">
+            <summary>Numeric 12-bit iNES/NES 2.0 mapper identifier (<c>0..4095</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.SubmapperId">
+            <summary>Numeric NES 2.0 submapper identifier (<c>0..15</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.PrgRomSizeBytes">
+            <summary>Total PRG-ROM payload length in bytes.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.ChrRomSizeBytes">
+            <summary>Total CHR-ROM payload length in bytes (<c>0</c> selects CHR-RAM).</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.PrgRamSizeBytes">
+            <summary>Volatile or battery-backed PRG-RAM size in bytes.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.ChrRamSizeBytes">
+            <summary>CHR-RAM size in bytes when <see cref="P:reCart.Contracts.CartRomHeader.ChrRomSizeBytes"/> is zero.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.HasTrainer">
+            <summary>Whether a 512-byte legacy trainer block precedes PRG-ROM.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.HasBatteryBackedRam">
+            <summary>Whether battery-backed persistent PRG-RAM is declared.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.IsNes20">
+            <summary>Whether the header carries a valid NES 2.0 signature.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.Mirroring">
+            <summary>Initial hardware nametable mirroring arrangement.</summary>
+        </member>
+        <member name="P:reCart.Contracts.CartRomHeader.VideoRegionStandard">
+            <summary>Detected video timing standard declared in the header.</summary>
+        </member>
+        <member name="T:reCart.Contracts.CartRomHeaderParser">
+            <summary>
+            Clean-room iNES 1.0 and NES 2.0 16-byte header parser shared across compiler, core, decompiler, and player.
+            </summary>
+        </member>
+        <member name="F:reCart.Contracts.CartRomHeaderParser.HeaderSizeBytes">
+            <summary>Size in bytes of a standard iNES / NES 2.0 cartridge header.</summary>
+        </member>
+        <member name="F:reCart.Contracts.CartRomHeaderParser.TrainerSizeBytes">
+            <summary>Size in bytes of an optional legacy iNES trainer preceding PRG-ROM.</summary>
+        </member>
+        <member name="M:reCart.Contracts.CartRomHeaderParser.Parse(System.ReadOnlySpan{System.Byte})">
+            <summary>Parses a 16-byte iNES 1.0 or NES 2.0 header from <paramref name="romBytes"/>.</summary>
+            <param name="romBytes">Complete cartridge container buffer starting with <c>NES\x1A</c>.</param>
+            <returns>Parsed <see cref="T:reCart.Contracts.CartRomHeader"/>.</returns>
+        </member>
+        <member name="T:reCart.Contracts.ICartMapper">
+            <summary>
+            Extensible cartridge mapper contract implemented by Mappers <c>0–3</c> in <c>v0.1.0</c> and later licensed boards.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMapper.MapperId">
+            <summary>Numeric iNES / NES 2.0 mapper number.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMapper.SubmapperId">
+            <summary>Numeric NES 2.0 submapper number.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMapper.Name">
+            <summary>Human-readable board family name (e.g., <c>NROM</c>, <c>MMC1</c>, <c>UxROM</c>, <c>CNROM</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMapper.Mirroring">
+            <summary>Current hardware nametable mirroring layout.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMapper.ActivePrgBank">
+            <summary>Currently active PRG bank index visible in the switchable CPU window.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMapper.ActiveChrBank">
+            <summary>Currently active CHR bank index visible in the PPU pattern window.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMapper.IsIrqPending">
+            <summary>Indicates whether the mapper is asserting an active cartridge IRQ line.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMapper.CpuRead(System.UInt16)">
+            <summary>Reads a byte from cartridge CPU space (<c>$4020-$FFFF</c>).</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMapper.CpuWrite(System.UInt16,System.Byte)">
+            <summary>Writes a byte into cartridge CPU/mapper register space (<c>$4020-$FFFF</c>).</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMapper.PpuRead(System.UInt16)">
+            <summary>Reads a byte from cartridge CHR / nametable pattern space (<c>$0000-$1FFF</c>).</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMapper.PpuWrite(System.UInt16,System.Byte)">
+            <summary>Writes a byte into cartridge CHR-RAM space (<c>$0000-$1FFF</c>).</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMapper.OnPpuA12Edge(System.Boolean,System.Int32,System.Int32)">
+            <summary>Notifies scanline-counting mappers (e.g., future <c>MMC3</c>) on PPU address line <c>A12</c> edges.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMapper.Reset">
+            <summary>Resets mapper bank latches and IRQ state to power-on/reset defaults.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMapper.CaptureState">
+            <summary>Captures deterministic binary mapper state for <c>F5</c> QuickSave snapshots.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMapper.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <summary>Restores deterministic binary mapper state from a QuickSave snapshot.</summary>
+        </member>
+        <member name="T:reCart.Contracts.ICartMemoryBus">
+            <summary>
+            Clean-room <c>2A03</c> 16-bit CPU memory bus and bank-switching control interface.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMemoryBus.ActivePrgBank">
+            <summary>Gets the active switchable PRG-ROM bank slot.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMemoryBus.ActiveChrBank">
+            <summary>Gets the active switchable CHR pattern bank slot.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMemoryBus.Read(System.UInt16)">
+            <summary>Reads a byte from the 16-bit CPU address space (<c>$0000-$FFFF</c>).</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMemoryBus.Write(System.UInt16,System.Byte)">
+            <summary>Writes a byte into the 16-bit CPU address space (<c>$0000-$FFFF</c>).</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMemoryBus.SwitchPrgBank(System.UInt32)">
+            <summary>Selects a switchable PRG bank slot.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMemoryBus.SwitchChrBank(System.UInt32)">
+            <summary>Selects a switchable CHR bank slot.</summary>
+        </member>
+        <member name="T:reCart.Contracts.ICartCpuContext">
+            <summary>
+            Exposes <c>RP2A03</c> 6502 registers, DMA stalls, interrupts, and snapshots to statically lifted modules.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartCpuContext.A">
+            <summary>Accumulator register (<c>A</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartCpuContext.X">
+            <summary>X index register (<c>X</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartCpuContext.Y">
+            <summary>Y index register (<c>Y</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartCpuContext.SP">
+            <summary>Stack pointer offset (<c>$0100 + SP</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartCpuContext.PC">
+            <summary>16-bit program counter (<c>PC</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartCpuContext.P">
+            <summary>Processor status flags (<c>NV-BDIZC</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartCpuContext.CycleCount">
+            <summary>Total elapsed <c>2A03</c> CPU cycles.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartCpuContext.Reset">
+            <summary>Resets CPU registers and loads <c>$FFFC-$FFFD</c> reset vector.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartCpuContext.RequestNmi">
+            <summary>Asserts a rising-edge non-maskable interrupt (<c>NMI</c>) from the PPU.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartCpuContext.RequestIrq">
+            <summary>Asserts a level-sensitive maskable interrupt (<c>IRQ</c>) from APU or mapper hardware.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartCpuContext.TriggerOamDma(System.Byte)">
+            <summary>Executes an <c>OAMDMA</c> (<c>$4014</c>) transfer with accurate <c>513/514</c> cycle stall accounting.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartCpuContext.ApplyDmcStallCycles(System.Int32)">
+            <summary>Applies <c>DMC</c> DMA cycle stealing stall cycles.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartCpuContext.CaptureState">
+            <summary>Serializes deterministic CPU state bytes for QuickSave snapshots.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartCpuContext.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <summary>Restores deterministic CPU state from a QuickSave snapshot.</summary>
+        </member>
+        <member name="T:reCart.Contracts.ICartPpuController">
+            <summary>
+            Clean-room dot-stepped <c>RP2C02</c> PPU register and framebuffer contract.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartPpuController.Scanline">
+            <summary>Current scanline index within the frame.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartPpuController.Dot">
+            <summary>Current PPU dot cycle within the scanline (<c>0..340</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartPpuController.FrameCount">
+            <summary>Completed frame counter.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartPpuController.StepDot">
+            <summary>Advances the PPU state by one PPU dot and returns <c>true</c> on frame completion.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartPpuController.StepScanline">
+            <summary>Advances the PPU state across one full scanline (<c>341</c> dots).</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartPpuController.TakeNmiPending">
+            <summary>Returns and clears any pending VBlank NMI edge generated by the PPU.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartPpuController.WriteOamByte(System.Byte,System.Byte)">
+            <summary>Writes one byte directly into PPU OAM sprite memory during OAM DMA.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartPpuController.ReadRegister(System.UInt16)">
+            <summary>Reads a memory-mapped PPU register (<c>$2000-$2007</c>).</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartPpuController.WriteRegister(System.UInt16,System.Byte)">
+            <summary>Writes a memory-mapped PPU register (<c>$2000-$2007</c>).</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartPpuController.FrameBufferRgba">
+            <summary>Current <c>256x240</c> RGBA8888 framebuffer ready for host presentation.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartPpuController.CaptureState">
+            <summary>Captures deterministic PPU register, VRAM, palette, and OAM state bytes.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartPpuController.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <summary>Restores deterministic PPU state from a QuickSave snapshot.</summary>
+        </member>
+        <member name="T:reCart.Contracts.ICartApuSink">
+            <summary>
+            Clean-room <c>RP2A03</c> APU register sink, DMC stall tracker, and interleaved PCM buffer contract.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartApuSink.SampleRateHz">
+            <summary>Configured stereo output PCM sample rate in hertz.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartApuSink.IsIrqPending">
+            <summary>Indicates whether the APU frame counter or DMC channel has a pending IRQ.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartApuSink.DroppedSampleCount">
+            <summary>Total ring-buffer audio sample frames dropped due to overflow.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartApuSink.ReadStatus">
+            <summary>Reads APU status register <c>$4015</c> and clears frame interrupt flags per hardware rules.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartApuSink.WriteRegister(System.UInt16,System.Byte)">
+            <summary>Writes a memory-mapped APU register (<c>$4000-$4017</c>).</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartApuSink.ClockCycle">
+            <summary>Advances APU channels and sample accumulator by one <c>2A03</c> CPU cycle.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartApuSink.TakePendingDmcStallCycles">
+            <summary>Consumes any pending DMC DMA CPU stall cycles generated since the last check.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartApuSink.ReadSamples(System.Span{System.Int16})">
+            <summary>Drains available interleaved stereo PCM samples into <paramref name="interleavedStereoPcm"/>.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartApuSink.CaptureState">
+            <summary>Captures deterministic APU channel and frame counter state bytes.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartApuSink.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <summary>Restores deterministic APU state from a QuickSave snapshot.</summary>
+        </member>
+        <member name="T:reCart.Contracts.ICartQuickSaveProvider">
+            <summary>
+            Deterministic <c>F5</c>/<c>F9</c> machine state snapshot capture and restore contract.
+            </summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartQuickSaveProvider.CaptureQuickSave">
+            <summary>Captures a complete deterministic CPU, RAM, PPU, APU, and Mapper snapshot.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartQuickSaveProvider.TryRestoreQuickSave(System.ReadOnlySpan{System.Byte},System.String@)">
+            <summary>Restores a previously captured deterministic machine snapshot.</summary>
+        </member>
+        <member name="T:reCart.Contracts.ICartRenderBackend">
+            <summary>
+            Render backend abstraction bridging <c>2C02</c> RGBA frames to <c>reEngine.Host</c>.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartRenderBackend.DisplayName">
+            <summary>Human-readable backend display name.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartRenderBackend.IsHardwareAccelerated">
+            <summary>Indicates whether this backend uses hardware GPU acceleration.</summary>
+        </member>
+        <member name="T:reCart.Contracts.ICartMachineRuntime">
+            <summary>
+            Coordinated cartridge runtime machine uniting CPU, Bus, Dot PPU, APU, Mapper, Input Ports, AOT module dispatch, and QuickSave snapshots.
+            </summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMachineRuntime.Bus">
+            <summary>Gets the active <c>2A03</c> CPU memory bus.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMachineRuntime.Cpu">
+            <summary>Gets the active <c>2A03</c> CPU register context.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMachineRuntime.Ppu">
+            <summary>Gets the active dot-stepped <c>2C02</c> PPU controller.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMachineRuntime.Apu">
+            <summary>Gets the active <c>2A03</c> APU sink.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMachineRuntime.Mapper">
+            <summary>Gets the active numeric-ID cartridge mapper.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMachineRuntime.TimingProfile">
+            <summary>Gets the active region timing profile.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMachineRuntime.Diagnostics">
+            <summary>Gets mutable execution diagnostics distinguishing static AOT vs quarantined oracle steps.</summary>
+        </member>
+        <member name="P:reCart.Contracts.ICartMachineRuntime.ExecutionTier">
+            <summary>Gets the active execution tier enforcing fail-closed <c>staticAotOnly</c>.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMachineRuntime.SetControllerButtons(System.Int32,System.UInt32)">
+            <summary>Updates latched controller bitmask (<c>A, B, Select, Start, Up, Down, Left, Right</c>) for controller port <paramref name="portIndex"/>.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMachineRuntime.MountStaticModule(reCart.Contracts.ICartRecompGameModule,reCart.Contracts.ICartModuleManifest,System.String,System.String)">
+            <summary>Binds a statically compiled AOT module and runtime directories onto this machine.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartMachineRuntime.StepFrame(System.Boolean)">
+            <summary>Executes one full video frame of CPU, PPU dot rendering, APU sampling, and static/oracle dispatch.</summary>
+        </member>
+        <member name="T:reCart.Contracts.ICartCompilerPipeline">
+            <summary>
+            Clean-room static lifting, 3-member <c>.recomp</c> packaging, and cold AOT compilation contract.
+            </summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartCompilerPipeline.PackageCleanRoomRecomp(System.ReadOnlySpan{System.Byte},reCart.Contracts.CartPackageManifest,System.String)">
+            <summary>Packages lifted C# sources and <c>module.recomp.json</c> into a strictly 3-member clean-room <c>.recomp</c> archive.</summary>
+        </member>
+        <member name="M:reCart.Contracts.ICartCompilerPipeline.CompileAndLoadAsync(System.String,System.String,System.String,System.Action{System.String},System.Threading.CancellationToken)">
+            <summary>Compiles a <c>.recomp</c> archive out-of-process into <c>&lt;dataDir&gt;\cache\</c> and loads the entry module.</summary>
+        </member>
+    </members>
+</doc>

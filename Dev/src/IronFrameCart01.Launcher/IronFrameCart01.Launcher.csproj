@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AssemblyName>IronFrame-OuterFortress-Cart-01</AssemblyName>
+    <RootNamespace>IronFrameCart01.Launcher</RootNamespace>
+    <ApplicationTitle>IronFrame OuterFortress (Cart) 01</ApplicationTitle>
+    <ApplicationIcon>..\..\assets\IronFrame-OuterFortress-Cart-01.ico</ApplicationIcon>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>false</SelfContained>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' Or '$(IronFrameTestAutomation)' == 'true'">
+    <DefineConstants>$(DefineConstants);IRONFRAME_TEST_AUTOMATION</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="IronFrameCart01.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Foundation.Core">
+      <HintPath>..\..\lib\Foundation.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Foundation.Launcher">
+      <HintPath>..\..\lib\Foundation.Launcher.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Foundation.Retro">
+      <HintPath>..\..\lib\Foundation.Retro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="reEngine.Core">
+      <HintPath>..\..\lib\reEngine.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="reCart.Contracts">
+      <HintPath>..\..\lib\reCart.Contracts.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <EmbeddedResource Include="..\..\lib\Foundation.Core.dll" LogicalName="IronFrameCart01.Launcher.Assemblies.Foundation.Core.dll" />
+    <EmbeddedResource Include="..\..\lib\Foundation.Launcher.dll" LogicalName="IronFrameCart01.Launcher.Assemblies.Foundation.Launcher.dll" />
+    <EmbeddedResource Include="..\..\lib\Foundation.Retro.dll" LogicalName="IronFrameCart01.Launcher.Assemblies.Foundation.Retro.dll" />
+    <EmbeddedResource Include="..\..\lib\reEngine.Core.dll" LogicalName="IronFrameCart01.Launcher.Assemblies.reEngine.Core.dll" />
+    <EmbeddedResource Include="..\..\lib\reCart.Contracts.dll" LogicalName="IronFrameCart01.Launcher.Assemblies.reCart.Contracts.dll" />
+    <EmbeddedResource Include="..\..\settings.example.json" LogicalName="IronFrameCart01.Launcher.SettingsExample.json" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' Or '$(IronFrameTestAutomation)' == 'true'">
+    <Reference Include="Foundation.Automation">
+      <HintPath>..\..\lib\Foundation.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="Foundation.UI">
+      <HintPath>..\..\lib\Foundation.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

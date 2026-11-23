@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>IronFrameCart01.Module</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="IronFrameCart01.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Foundation.Core">
+      <HintPath>..\..\lib\Foundation.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Foundation.Retro">
+      <HintPath>..\..\lib\Foundation.Retro.dll</HintPath>
+    </Reference>
+    <Reference Include="reCart.Contracts">
+      <HintPath>..\..\lib\reCart.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="reCart.Core">
+      <HintPath>..\..\lib\reCart.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="reCart.Compiler">
+      <HintPath>..\..\lib\reCart.Compiler.dll</HintPath>
+    </Reference>
+    <Reference Include="reEngine.Core">
+      <HintPath>..\..\lib\reEngine.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Manifests\**\*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

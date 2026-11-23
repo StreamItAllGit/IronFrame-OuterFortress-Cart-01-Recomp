@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schemas.local/manifest.v2.json",
+  "schemaVersion": 2,
+  "appId": "ironframe-outerfortress-cart-01",
+  "useGlobalFormatRules": true,
+  "engineId": "reCart",
+  "compatibleEngineTrack": "0.1.x",
+  "installProfile": "lightweight",
+  "executionTierMode": "staticAotOnly",
+  "video": {
+    "schemaVersion": 2,
+    "domain": "video",
+    "backendId": "opengl",
+    "aspectRatioMode": "nativePar",
+    "resolutionScale": 2,
+    "overscanCropPx": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "isFullscreen": false,
+    "displayMode": "windowed",
+    "isVsyncEnabled": false,
+    "targetFps": 60,
+    "isFpsOverlayEnabled": false
+  },
+  "audio": {
+    "schemaVersion": 2,
+    "domain": "audio",
+    "audioDriver": "wasapi",
+    "masterVolume": 0.9,
+    "isAudioMuted": false,
+    "bgmVolume": 1.0,
+    "sfxVolume": 1.0,
+    "shouldMuteOnFocusLoss": false
+  },
+  "controls": {
+    "schemaVersion": 2,
+    "domain": "controls",
+    "profileMode": "modernPc",
+    "useGlobalFormatRules": true
+  }
+}

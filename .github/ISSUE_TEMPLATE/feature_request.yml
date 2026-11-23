@@ -1,0 +1,20 @@
+name: Feature Request
+description: Propose an opt-in enhancement or milestone improvement aligned with Dev/docs/CHARTER.md.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: "All enhancements must preserve authentic `60.0988 Hz` simulation defaults (`Dev/docs/CHARTER.md`) and clean-room boundaries."
+  - type: input
+    id: target_horizon
+    attributes:
+      label: Target Milestone / Domain
+      placeholder: "v0.2.0 Audio DSP / v0.3.0 Presentation / Tooling"
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Enhancement
+      description: Describe the feature, how it toggles cleanly as opt-in, and expected test coverage.
+    validations:
+      required: true

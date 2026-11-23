@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.local/manifest.v2.json",
+  "schemaVersion": 2,
+  "manifestType": "standalone-app",
+  "appId": "ironframe-outerfortress-cart-01",
+  "version": "0.1.0",
+  "updatedAtUtc": "2026-11-23T20:15:00.000Z",
+  "displayName": "IronFrame OuterFortress (Cart) 01",
+  "containerTier": "Tier A (4-Folder)",
+  "ecosystemTier": "Tier3_Standalone",
+  "appArchetype": "RECOMP",
+  "umbrellaSubpath": "StreamItAll\\reEngine\\games\\IronFrame-OuterFortress-Cart-01",
+  "activeMilestone": "0.2.0",
+  "goalMajorVersion": "1.0.0",
+  "sdkVersion": "0.5.5",
+  "minSuiteVersion": "0.6.2",
+  "engineId": "reCart",
+  "engineVersion": "0.1.3",
+  "compatibleEngineTrack": "0.1.x",
+  "supportedEngineTracks": [
+    "0.1.x"
+  ],
+  "preloadRomDir": "data/rom",
+  "upstreamResearchPath": "IronFrame-OuterFortress-Cart-01-Decomp",
+  "isPublicRepo": true,
+  "spdxLicense": "MIT",
+  "allowAutoStart": false,
+  "currentRecompTier": "R0",
+  "goalRecompTier": "R5",
+  "downstreamProjects": []
+}

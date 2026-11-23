@@ -1,0 +1,682 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>reCart.Core</name>
+    </assembly>
+    <members>
+        <member name="T:reCart.Core.Apu.Apu2A03Core">
+            <summary>
+            Cycle-clocked <c>RP2A03</c> APU driving 5 audio channels, 4/5-step frame sequencer,
+            DMC memory reads/stalls, non-linear mixing, and stereo PCM output via <see cref="T:Foundation.Core.AudioRingBuffer"/>.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Apu.Apu2A03Core.#ctor(System.Func{System.UInt16,System.Byte},reCart.Contracts.CartRegionTimingProfile,System.Int32,System.Int32)">
+            <summary>Initializes an <see cref="T:reCart.Core.Apu.Apu2A03Core"/> bound to optional DMC memory reader, timing profile, and sample rate.</summary>
+        </member>
+        <member name="P:reCart.Core.Apu.Apu2A03Core.SampleRateHz">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Apu.Apu2A03Core.IsIrqPending">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Apu.Apu2A03Core.DroppedSampleCount">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Apu.Apu2A03Core.RingBuffer">
+            <summary>Gets the underlying SPSC stereo audio ring buffer.</summary>
+        </member>
+        <member name="M:reCart.Core.Apu.Apu2A03Core.Reset">
+            <summary>Resets all APU channels, frame counter, IRQ flags, and clears buffered audio.</summary>
+        </member>
+        <member name="M:reCart.Core.Apu.Apu2A03Core.ReadStatus">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Apu.Apu2A03Core.WriteRegister(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Apu.Apu2A03Core.ClockCycle">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Apu.Apu2A03Core.TakePendingDmcStallCycles">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Apu.Apu2A03Core.ReadSamples(System.Span{System.Int16})">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Apu.Apu2A03Core.CaptureState">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Apu.Apu2A03Core.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:reCart.Core.Apu.Apu2A03Mixer">
+            <summary>
+            Implements hardware-calibrated RP2A03 non-linear Pulse + TND lookup tables and
+            1-pole high-pass DC blocking to produce clean stereo interleaved 16-bit PCM frames.
+            </summary>
+        </member>
+        <member name="T:reCart.Core.Cpu.CartMemoryBus">
+            <summary>
+            Routes <c>2A03</c> CPU memory reads and writes across internal WRAM, <c>2C02</c> PPU, <c>2A03</c> APU,
+            <c>$4014</c> OAM DMA, <c>$4016/$4017</c> controller ports, and cartridge mapper space (<c>$4020-$FFFF</c>).
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Cpu.CartMemoryBus.#ctor(reCart.Contracts.ICartPpuController,reCart.Contracts.ICartApuSink,reCart.Contracts.ICartMapper,reCart.Core.Input.CartInputPorts)">
+            <summary>Initializes a clean-room <c>2A03</c> memory bus connecting PPU, APU, mapper, and input ports.</summary>
+        </member>
+        <member name="P:reCart.Core.Cpu.CartMemoryBus.InputPorts">
+            <summary>Controller input ports bound to <c>$4016/$4017</c>.</summary>
+        </member>
+        <member name="P:reCart.Core.Cpu.CartMemoryBus.ActivePrgBank">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Cpu.CartMemoryBus.ActiveChrBank">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.CartMemoryBus.Read(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.CartMemoryBus.Write(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.CartMemoryBus.SwitchPrgBank(System.UInt32)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.CartMemoryBus.SwitchChrBank(System.UInt32)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.CartMemoryBus.Reset(System.Boolean)">
+            <summary>Clears internal 2 KB WRAM and resets controller strobe state.</summary>
+        </member>
+        <member name="M:reCart.Core.Cpu.CartMemoryBus.CaptureState">
+            <summary>Captures deterministic 2 KB WRAM and input port snapshot bytes.</summary>
+        </member>
+        <member name="M:reCart.Core.Cpu.CartMemoryBus.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <summary>Restores deterministic 2 KB WRAM and input port state from a snapshot.</summary>
+        </member>
+        <member name="T:reCart.Core.Cpu.Cpu2A03Core">
+            <summary>
+            Clean-room <c>RP2A03</c> 6502 CPU core (zero BCD decimal mode, cycle-accurate bus ticks, <c>OAMDMA</c> <c>513/514</c> stall).
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.#ctor(reCart.Contracts.ICartMemoryBus,reCart.Contracts.ICartPpuController)">
+            <summary>Initializes an <c>RP2A03</c> CPU bound to <paramref name="bus"/> and optional <paramref name="ppu"/>.</summary>
+        </member>
+        <member name="P:reCart.Core.Cpu.Cpu2A03Core.A">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Cpu.Cpu2A03Core.X">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Cpu.Cpu2A03Core.Y">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Cpu.Cpu2A03Core.SP">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Cpu.Cpu2A03Core.PC">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Cpu.Cpu2A03Core.P">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Cpu.Cpu2A03Core.CycleCount">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.RequestNmi">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.RequestIrq">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.ClearIrq">
+            <summary>Clears any pending maskable IRQ edge/latch.</summary>
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.TriggerOamDma(System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.ApplyDmcStallCycles(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.StepInstruction">
+            <summary>Executes one pending interrupt or one 6502 instruction and returns elapsed CPU cycles.</summary>
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.CaptureState">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Cpu.Cpu2A03Core.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:reCart.Core.Input.NesControllerButtons">
+            <summary>
+            Canonical NES controller button bitmask ordered by serial shift read position (<c>A..Right</c>).
+            </summary>
+        </member>
+        <member name="F:reCart.Core.Input.NesControllerButtons.None">
+            <summary>No buttons pressed.</summary>
+        </member>
+        <member name="F:reCart.Core.Input.NesControllerButtons.A">
+            <summary>A button (shift read 0).</summary>
+        </member>
+        <member name="F:reCart.Core.Input.NesControllerButtons.B">
+            <summary>B button (shift read 1).</summary>
+        </member>
+        <member name="F:reCart.Core.Input.NesControllerButtons.Select">
+            <summary>Select button (shift read 2).</summary>
+        </member>
+        <member name="F:reCart.Core.Input.NesControllerButtons.Start">
+            <summary>Start button (shift read 3).</summary>
+        </member>
+        <member name="F:reCart.Core.Input.NesControllerButtons.Up">
+            <summary>D-Pad Up (shift read 4).</summary>
+        </member>
+        <member name="F:reCart.Core.Input.NesControllerButtons.Down">
+            <summary>D-Pad Down (shift read 5).</summary>
+        </member>
+        <member name="F:reCart.Core.Input.NesControllerButtons.Left">
+            <summary>D-Pad Left (shift read 6).</summary>
+        </member>
+        <member name="F:reCart.Core.Input.NesControllerButtons.Right">
+            <summary>D-Pad Right (shift read 7).</summary>
+        </member>
+        <member name="T:reCart.Core.Input.CartInputPorts">
+            <summary>
+            Implements NES <c>$4016</c> strobe and <c>$4016/$4017</c> shift-register reads across 4 controller ports.
+            </summary>
+        </member>
+        <member name="F:reCart.Core.Input.CartInputPorts.PortCount">
+            <summary>Total supported controller ports (Ports 0-1 standard, Ports 2-3 via Four Score reads 9-16).</summary>
+        </member>
+        <member name="P:reCart.Core.Input.CartInputPorts.Strobe">
+            <summary>Gets whether the <c>$4016</c> bit-0 controller strobe line is currently asserted high.</summary>
+        </member>
+        <member name="P:reCart.Core.Input.CartInputPorts.IsFourScoreEnabled">
+            <summary>Gets or sets whether 4-player Four Score multiplexing (<c>reads 9..24</c>) is explicitly active.</summary>
+        </member>
+        <member name="M:reCart.Core.Input.CartInputPorts.SetControllerButtons(System.Int32,System.UInt32)">
+            <summary>Updates the live button bitmask (<c>A..Right</c>) for controller port <paramref name="portIndex"/> (<c>0..3</c>).</summary>
+            <param name="portIndex">Zero-based port index (<c>0..3</c>).</param>
+            <param name="mask">Bitmask of pressed <see cref="T:reCart.Core.Input.NesControllerButtons"/>.</param>
+        </member>
+        <member name="M:reCart.Core.Input.CartInputPorts.GetControllerButtons(System.Int32)">
+            <summary>Returns the current live button bitmask for <paramref name="portIndex"/> (<c>0..3</c>).</summary>
+        </member>
+        <member name="M:reCart.Core.Input.CartInputPorts.WriteStrobe(System.Byte)">
+            <summary>Handles writes to <c>$4016</c> strobe bit 0.</summary>
+        </member>
+        <member name="M:reCart.Core.Input.CartInputPorts.ReadPort(System.Int32)">
+            <summary>Reads the next serial bit from controller port <c>0</c> (<c>$4016</c>) or <c>1</c> (<c>$4017</c>).</summary>
+        </member>
+        <member name="M:reCart.Core.Input.CartInputPorts.ReadRegister(System.UInt16)">
+            <summary>Routes CPU read accesses for <c>$4016</c> and <c>$4017</c>.</summary>
+        </member>
+        <member name="M:reCart.Core.Input.CartInputPorts.WriteRegister(System.UInt16,System.Byte)">
+            <summary>Routes CPU write accesses for <c>$4016</c>.</summary>
+        </member>
+        <member name="M:reCart.Core.Input.CartInputPorts.Reset">
+            <summary>Resets strobe and shift-register state while preserving configured live button state.</summary>
+        </member>
+        <member name="M:reCart.Core.Input.CartInputPorts.CaptureState">
+            <summary>Captures deterministic controller port state for QuickSave snapshots.</summary>
+        </member>
+        <member name="M:reCart.Core.Input.CartInputPorts.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <summary>Restores controller port state from a QuickSave snapshot.</summary>
+        </member>
+        <member name="T:reCart.Core.Mappers.CartMapperBase">
+            <summary>
+            Shared clean-room base for NES cartridge mappers providing PRG/CHR/SRAM storage and deterministic state framing.
+            </summary>
+        </member>
+        <member name="P:reCart.Core.Mappers.CartMapperBase.MapperId">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Mappers.CartMapperBase.SubmapperId">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Mappers.CartMapperBase.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Mappers.CartMapperBase.Mirroring">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Mappers.CartMapperBase.ActivePrgBank">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Mappers.CartMapperBase.ActiveChrBank">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Mappers.CartMapperBase.IsIrqPending">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Mappers.CartMapperBase.InitialMirroring">
+            <summary>Initial mirroring mode decoded from the cartridge header.</summary>
+        </member>
+        <member name="P:reCart.Core.Mappers.CartMapperBase.BatteryRam">
+            <summary>Read-only view of cartridge PRG-RAM / battery SRAM.</summary>
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperBase.CpuRead(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperBase.CpuWrite(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperBase.PpuRead(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperBase.PpuWrite(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperBase.OnPpuA12Edge(System.Boolean,System.Int32,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperBase.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperBase.CaptureState">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperBase.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:reCart.Core.Mappers.CartMapperFactory">
+            <summary>
+            Instantiates clean-room <see cref="T:reCart.Contracts.ICartMapper"/> implementations for Mappers <c>0–3</c>.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperFactory.IsSupported(System.UInt16)">
+            <summary>Returns whether <paramref name="mapperId"/> is supported in <c>reCart v0.1.0</c>.</summary>
+        </member>
+        <member name="M:reCart.Core.Mappers.CartMapperFactory.Create(reCart.Core.Rom.InesRomImage)">
+            <summary>Creates the appropriate <see cref="T:reCart.Contracts.ICartMapper"/> instance for <paramref name="rom"/>.</summary>
+        </member>
+        <member name="T:reCart.Core.Mappers.CnRomMapper">
+            <summary>
+            Clean-room iNES Mapper <c>3</c> (<c>CNROM</c>) implementation supporting 8 KB CHR bank switching.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Mappers.CnRomMapper.#ctor(reCart.Core.Rom.InesRomImage)">
+            <summary>Initializes a <c>CNROM</c> mapper from a loaded <see cref="T:reCart.Core.Rom.InesRomImage"/>.</summary>
+        </member>
+        <member name="P:reCart.Core.Mappers.CnRomMapper.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CnRomMapper.CpuRead(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CnRomMapper.CpuWrite(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CnRomMapper.PpuRead(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CnRomMapper.PpuWrite(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CnRomMapper.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CnRomMapper.CaptureState">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.CnRomMapper.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:reCart.Core.Mappers.Mmc1Mapper">
+            <summary>
+            Clean-room iNES Mapper <c>1</c> (<c>MMC1</c>) with consecutive-cycle RMW write filtering,
+            <c>0x80</c> shift reset, PRG/CHR bank switching, dynamic mirroring, and battery SRAM support.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Mappers.Mmc1Mapper.#ctor(reCart.Core.Rom.InesRomImage,System.Func{System.UInt64})">
+            <summary>Initializes an <c>MMC1</c> mapper with optional CPU cycle provider for consecutive-write filtering.</summary>
+        </member>
+        <member name="P:reCart.Core.Mappers.Mmc1Mapper.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.Mmc1Mapper.CpuRead(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.Mmc1Mapper.CpuWrite(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.Mmc1Mapper.PpuRead(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.Mmc1Mapper.PpuWrite(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.Mmc1Mapper.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.Mmc1Mapper.CaptureState">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.Mmc1Mapper.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:reCart.Core.Mappers.NromMapper">
+            <summary>
+            Clean-room iNES Mapper <c>0</c> (<c>NROM</c>) implementation supporting 16 KB mirrored and 32 KB PRG-ROM boards.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Mappers.NromMapper.#ctor(reCart.Core.Rom.InesRomImage)">
+            <summary>Initializes an <c>NROM</c> mapper from a loaded <see cref="T:reCart.Core.Rom.InesRomImage"/>.</summary>
+        </member>
+        <member name="P:reCart.Core.Mappers.NromMapper.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.NromMapper.CpuRead(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.NromMapper.CpuWrite(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.NromMapper.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.NromMapper.CaptureState">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.NromMapper.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:reCart.Core.Mappers.UxRomMapper">
+            <summary>
+            Clean-room iNES Mapper <c>2</c> (<c>UxROM</c>) switching <c>$8000-$BFFF</c> with fixed last bank at <c>$C000-$FFFF</c>
+            and hardware bus-conflict ANDing (<c>value &amp; prgByte</c>, e.g. <c>$FFD0-$FFD7</c> bank tables) unless Submapper <c>1</c>.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Mappers.UxRomMapper.#ctor(reCart.Core.Rom.InesRomImage)">
+            <summary>Initializes a <c>UxROM</c> mapper from a loaded <see cref="T:reCart.Core.Rom.InesRomImage"/>.</summary>
+        </member>
+        <member name="P:reCart.Core.Mappers.UxRomMapper.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.UxRomMapper.CpuRead(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.UxRomMapper.CpuWrite(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.UxRomMapper.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.UxRomMapper.CaptureState">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Mappers.UxRomMapper.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:reCart.Core.Oracle.InterpreterOracle">
+            <summary>
+            Strictly quarantined Tier 4 reference interpreter path for differential <c>D4b</c> lockstep verification.
+            Throws <see cref="T:System.InvalidOperationException"/> unless <see cref="F:reCart.Contracts.CartExecutionTierMode.InterpreterOracle"/> is active.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Oracle.InterpreterOracle.#ctor(reCart.Contracts.CartExecutionTierMode,reCart.Core.Cpu.Cpu2A03Core)">
+            <summary>Initializes a quarantined Tier 4 oracle wrapping <paramref name="cpu"/>.</summary>
+        </member>
+        <member name="M:reCart.Core.Oracle.InterpreterOracle.#ctor(reCart.Core.Cpu.Cpu2A03Core,reCart.Contracts.CartExecutionTierMode)">
+            <summary>Initializes a quarantined Tier 4 oracle wrapping <paramref name="cpu"/>.</summary>
+        </member>
+        <member name="P:reCart.Core.Oracle.InterpreterOracle.ExecutionTier">
+            <summary>Configured execution tier governing quarantine enforcement.</summary>
+        </member>
+        <member name="P:reCart.Core.Oracle.InterpreterOracle.Cpu">
+            <summary>Underlying <c>2A03</c> CPU instance.</summary>
+        </member>
+        <member name="P:reCart.Core.Oracle.InterpreterOracle.ExecutedSteps">
+            <summary>Total instructions stepped through the quarantined oracle.</summary>
+        </member>
+        <member name="P:reCart.Core.Oracle.InterpreterOracle.ExecutedCycles">
+            <summary>Total CPU cycles stepped through the quarantined oracle.</summary>
+        </member>
+        <member name="M:reCart.Core.Oracle.InterpreterOracle.EnsureAuthorized(reCart.Contracts.CartExecutionTierMode)">
+            <summary>Verifies that <paramref name="tier"/> explicitly permits quarantined Tier 4 execution.</summary>
+        </member>
+        <member name="M:reCart.Core.Oracle.InterpreterOracle.CreateAuthorized(reCart.Contracts.CartExecutionTierMode,reCart.Core.Cpu.Cpu2A03Core)">
+            <summary>Creates an <see cref="T:reCart.Core.Oracle.InterpreterOracle"/> and fails immediately if <paramref name="executionTier"/> is not <see cref="F:reCart.Contracts.CartExecutionTierMode.InterpreterOracle"/>.</summary>
+        </member>
+        <member name="M:reCart.Core.Oracle.InterpreterOracle.StepInstruction">
+            <summary>Executes one single 6502 instruction under explicit <see cref="F:reCart.Contracts.CartExecutionTierMode.InterpreterOracle"/> quarantine.</summary>
+        </member>
+        <member name="M:reCart.Core.Oracle.InterpreterOracle.StepInstruction(reCart.Contracts.CartExecutionTierMode)">
+            <summary>Executes one single 6502 instruction, validating <paramref name="activeTier"/> is <see cref="F:reCart.Contracts.CartExecutionTierMode.InterpreterOracle"/>.</summary>
+        </member>
+        <member name="M:reCart.Core.Oracle.InterpreterOracle.ExecuteCycles(System.Int32)">
+            <summary>Executes at least <paramref name="cycleBudget"/> CPU cycles in quarantined Tier 4 mode.</summary>
+        </member>
+        <member name="T:reCart.Core.Ppu.Ppu2C02Core">
+            <summary>
+            Cycle-accurate dot-stepped <c>RP2C02</c> PPU rendering <c>256x240</c> RGBA8888 frames
+            against <see cref="T:reCart.Contracts.CartRegionTimingProfile"/> and <see cref="T:reCart.Contracts.ICartMapper"/>.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.#ctor(reCart.Contracts.ICartMapper,reCart.Contracts.CartRegionTimingProfile)">
+            <summary>Initializes a dot-stepped <see cref="T:reCart.Core.Ppu.Ppu2C02Core"/> bound to <paramref name="mapper"/> and <paramref name="timing"/>.</summary>
+        </member>
+        <member name="P:reCart.Core.Ppu.Ppu2C02Core.Scanline">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Ppu.Ppu2C02Core.Dot">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Ppu.Ppu2C02Core.FrameCount">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Ppu.Ppu2C02Core.FrameBufferRgba">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.Reset">
+            <summary>Resets all PPU registers, scanline/dot counters, and internal VRAM/OAM state.</summary>
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.StepDot">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.StepScanline">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.TakeNmiPending">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.WriteOamByte(System.Byte,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.ReadRegister(System.UInt16)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.WriteRegister(System.UInt16,System.Byte)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.CaptureState">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Core.RestoreState(System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:reCart.Core.Ppu.Ppu2C02Palette">
+            <summary>
+            Clean-room RP2C02 64-color master palette, palette RAM mirroring (<c>$3F00-$3F1F</c>),
+            greyscale masking (<c>PPUMASK &amp; 0x01</c>), and RGB emphasis attenuation (<c>PPUMASK &amp; 0xE0</c>).
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Palette.ResolvePaletteIndex(System.UInt16)">
+            <summary>Resolves a mirrored <c>$3F00-$3FFF</c> palette RAM index (<c>0..31</c>).</summary>
+        </member>
+        <member name="M:reCart.Core.Ppu.Ppu2C02Palette.WriteRgbaPixel(System.Span{System.Byte},System.Int32,System.Byte,System.Byte,System.Boolean)">
+            <summary>Writes a single RGBA8888 pixel into <paramref name="frameBuffer"/> applying greyscale and emphasis bits.</summary>
+        </member>
+        <member name="T:reCart.Core.Ppu.Ppu2C02Registers">
+            <summary>
+            Holds <c>RP2C02</c> control/mask/status latches, Loopy <c>v/t/x/w</c> scroll registers,
+            and VBlank/NMI race-suppression state.
+            </summary>
+        </member>
+        <member name="T:reCart.Core.Ppu.Ppu2C02Renderer">
+            <summary>
+            Implements dot-stepped <c>256x240</c> RP2C02 background and sprite pipelines,
+            CIRAM nametable mirroring, <c>A12</c> edge signaling, and sprite-0/overflow detection.
+            </summary>
+        </member>
+        <member name="T:reCart.Core.Rom.CartridgeLoader">
+            <summary>
+            Clean-room iNES 1.0 / NES 2.0 cartridge loader and SHA-256 verifier.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Rom.CartridgeLoader.Load(System.ReadOnlySpan{System.Byte})">
+            <summary>Parses a cartridge container byte span into an <see cref="T:reCart.Core.Rom.InesRomImage"/>.</summary>
+            <param name="romBytes">Complete <c>.nes</c> container bytes.</param>
+            <returns>Parsed immutable <see cref="T:reCart.Core.Rom.InesRomImage"/>.</returns>
+        </member>
+        <member name="M:reCart.Core.Rom.CartridgeLoader.LoadFromFile(System.String)">
+            <summary>Loads an iNES 1.0 / NES 2.0 cartridge from disk.</summary>
+            <param name="romFilePath">Absolute or relative path to a user-supplied <c>.nes</c> ROM file.</param>
+        </member>
+        <member name="M:reCart.Core.Rom.CartridgeLoader.CreateMapper(reCart.Core.Rom.InesRomImage)">
+            <summary>Constructs the matching <see cref="T:reCart.Contracts.ICartMapper"/> for <paramref name="rom"/>.</summary>
+        </member>
+        <member name="M:reCart.Core.Rom.CartridgeLoader.LoadWithMapper(System.ReadOnlySpan{System.Byte})">
+            <summary>Loads an iNES ROM container and instantiates its matching <see cref="T:reCart.Contracts.ICartMapper"/>.</summary>
+        </member>
+        <member name="T:reCart.Core.Rom.InesRomImage">
+            <summary>
+            Represents a parsed clean-room iNES 1.0 or NES 2.0 cartridge ROM image.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Rom.InesRomImage.#ctor(reCart.Contracts.CartRomHeader,System.Byte[],System.Byte[],System.Byte[],System.String,System.String,System.String)">
+            <summary>Initializes an immutable <see cref="T:reCart.Core.Rom.InesRomImage"/> from parsed header metadata and sliced ROM buffers.</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.Header">
+            <summary>Parsed iNES 1.0 or NES 2.0 header fields.</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.PrgRom">
+            <summary>Read-only view of the PRG-ROM payload.</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.ChrRom">
+            <summary>Read-only view of the CHR-ROM payload (empty when cartridge uses CHR-RAM).</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.Trainer">
+            <summary>Optional 512-byte legacy trainer block (empty when <see cref="P:reCart.Contracts.CartRomHeader.HasTrainer"/> is false).</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.Sha256Hex">
+            <summary>Lowercase SHA-256 hex digest of the complete cartridge container bytes.</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.PrgSha256Hex">
+            <summary>Lowercase SHA-256 hex digest of the PRG-ROM segment.</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.ChrSha256Hex">
+            <summary>Lowercase SHA-256 hex digest of the CHR-ROM segment.</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.UsesChrRam">
+            <summary>Indicates whether the cartridge has zero CHR-ROM and uses writable CHR-RAM instead.</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.PrgBankCount16K">
+            <summary>Total 16 KB PRG-ROM banks present in this image.</summary>
+        </member>
+        <member name="P:reCart.Core.Rom.InesRomImage.ChrBankCount8K">
+            <summary>Total 8 KB CHR banks (CHR-ROM or allocated CHR-RAM).</summary>
+        </member>
+        <member name="T:reCart.Core.Runtime.CartMachineFactory">
+            <summary>
+            Wires a complete <see cref="T:reCart.Core.Runtime.CartMachineHost"/> instance from raw <c>.nes</c> cartridge container bytes.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineFactory.CreateFromRomBytes(System.Byte[],reCart.Contracts.CartVideoRegionStandard,reCart.Contracts.CartExecutionTierMode,reCart.Contracts.ICartModuleManifest,System.String,System.String)">
+            <summary>
+            Creates and resets a <see cref="T:reCart.Core.Runtime.CartMachineHost"/> bound to <paramref name="romBytes"/>,
+            <paramref name="region"/> timing, and <paramref name="executionTier"/> enforcement.
+            </summary>
+            <param name="romBytes">Complete iNES 1.0 or NES 2.0 cartridge bytes.</param>
+            <param name="region">Effective NTSC, PAL, or Dendy hardware timing region.</param>
+            <param name="executionTier">AOT-primary or quarantined <c>InterpreterOracle</c> execution tier.</param>
+            <param name="manifest">Optional clean-room module manifest metadata.</param>
+            <param name="preloadRomDir">Optional cartridge ROM preload directory.</param>
+            <param name="saveDir">Optional save directory for SRAM/QuickSaves.</param>
+            <returns>Initialized and reset <see cref="T:reCart.Core.Runtime.CartMachineHost"/> ready to mount static modules or step frames.</returns>
+        </member>
+        <member name="T:reCart.Core.Runtime.CartMachineHost">
+            <summary>
+            Coordinates cycle-locked <c>CPU + PPU + APU + Mapper</c> execution, static AOT module dispatch,
+            input port latching, and SHA-256 validated <c>F5/F9</c> QuickSave snapshots.
+            </summary>
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.#ctor(reCart.Contracts.ICartCpuContext,reCart.Contracts.ICartMemoryBus,reCart.Contracts.ICartPpuController,reCart.Contracts.ICartApuSink,reCart.Contracts.ICartMapper,System.Action{System.Int32,System.UInt32},reCart.Contracts.CartRegionTimingProfile,reCart.Contracts.CartExecutionTierMode)">
+            <summary>Initializes a <see cref="T:reCart.Core.Runtime.CartMachineHost"/> with the canonical 8 subsystem parameters.</summary>
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.#ctor(reCart.Contracts.ICartCpuContext,reCart.Contracts.ICartMemoryBus,reCart.Contracts.ICartPpuController,reCart.Contracts.ICartApuSink,reCart.Contracts.ICartMapper,System.Action{System.Int32,System.UInt32},reCart.Contracts.CartRegionTimingProfile,reCart.Contracts.CartExecutionTierMode,System.Func{System.Int32},reCart.Contracts.ICartModuleManifest,Foundation.Retro.IRecompRenderBackend,System.String,System.String)">
+            <summary>Initializes a <see cref="T:reCart.Core.Runtime.CartMachineHost"/> with optional oracle step callback, manifest, backend, and paths.</summary>
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.Bus">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.Cpu">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.Ppu">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.Apu">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.Mapper">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.Manifest">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.TimingProfile">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.Diagnostics">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.ExecutionTier">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.PreloadRomDirectory">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.SaveDirectory">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.Options">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Core.Runtime.CartMachineHost.RenderBackend">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.SetControllerButtons(System.Int32,System.UInt32)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.MountStaticModule(reCart.Contracts.ICartRecompGameModule,reCart.Contracts.ICartModuleManifest,System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.StepFrame(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.CaptureQuickSave">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.TryRestoreQuickSave(System.ReadOnlySpan{System.Byte},System.String@)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.GetFrameStats">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.SetTargetFps(System.Double,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Core.Runtime.CartMachineHost.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:reCart.Core.Runtime.CartQuickSaveSerializer">
+            <summary>
+            Serializes and validates deterministic machine snapshots with an <c>RCARTQS1</c> magic header
+            and trailing 32-byte <c>SHA-256</c> integrity digest.
+            </summary>
+        </member>
+    </members>
+</doc>

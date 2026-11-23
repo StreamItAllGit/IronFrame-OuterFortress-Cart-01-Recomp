@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/IronFrameCart01.RecipeGen/IronFrameCart01.RecipeGen.csproj" />
+    <Project Path="src/IronFrameCart01.Module/IronFrameCart01.Module.csproj" />
+    <Project Path="src/IronFrameCart01.Launcher/IronFrameCart01.Launcher.csproj" />
+    <Project Path="src/IronFrameCart01.Installer/IronFrameCart01.Installer.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/IronFrameCart01.Tests/IronFrameCart01.Tests.csproj" />
+  </Folder>
+</Solution>

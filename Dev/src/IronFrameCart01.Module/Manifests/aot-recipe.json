@@ -1,0 +1,3151 @@
+{
+  "schemaVersion": 1,
+  "moduleId": "ironframe-outerfortress-cart-01",
+  "platformId": "nes",
+  "mapperId": 2,
+  "submapperId": 0,
+  "entryAddresses": [
+    "0xC001",
+    "0xC06C",
+    "0xC0B7",
+    "0xC0B8",
+    "0xC0C9",
+    "0xC0D7",
+    "0xC0F7",
+    "0xC104",
+    "0xC14B",
+    "0xC189",
+    "0xC673",
+    "0xC689",
+    "0xC6B7",
+    "0xC6D5",
+    "0xC932",
+    "0xC936",
+    "0xC93A",
+    "0xC93E",
+    "0xC942",
+    "0xC946",
+    "0xC94A",
+    "0xC94C",
+    "0xC958",
+    "0xC989",
+    "0xCA03",
+    "0xCA21",
+    "0xD2E2",
+    "0xD492",
+    "0xD4A4",
+    "0xD513",
+    "0xD5A6",
+    "0xD7ED",
+    "0xFBEA",
+    "0xFF00",
+    "0xFF26",
+    "0xFF32",
+    "0xFF5D"
+  ],
+  "seeds": [
+    {
+      "prgBank": 0,
+      "address": "0x99A8",
+      "kind": "function",
+      "label": "mg_b034_bank00_shift_b01e_data_stub"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xA73E",
+      "kind": "function",
+      "label": "mg_b034_bank00_check_equip_flags_stub"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xA765",
+      "kind": "function",
+      "label": "mg_b034_try_spawn_alert_guard_checked"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xA771",
+      "kind": "function",
+      "label": "mg_b034_spawn_alert_guard_in_room"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xAA0C",
+      "kind": "function",
+      "label": "mg_b034_hud_refresh_equip_and_ammo"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xAA54",
+      "kind": "function",
+      "label": "mg_b034_hud_copy_padded_name_to_queue"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xAA79",
+      "kind": "function",
+      "label": "mg_b034_hud_init_vram_queue_header"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xAAD7",
+      "kind": "function",
+      "label": "mg_b034_hud_write_bcd_digit_tile"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB3FC",
+      "kind": "function",
+      "label": "mg_b034_update_screen_shake_effect"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB465",
+      "kind": "function",
+      "label": "mg_b034_update_hazard_and_restore_bank6"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB468",
+      "kind": "function",
+      "label": "mg_b034_restore_bank6_trampoline"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB46D",
+      "kind": "function",
+      "label": "mg_b034_update_hazard_damage_and_fx"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB523",
+      "kind": "function",
+      "label": "mg_b034_update_boss_hover_and_restore_bank6"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB529",
+      "kind": "function",
+      "label": "mg_b034_update_boss_vertical_hover_fx"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB57E",
+      "kind": "function",
+      "label": "mg_b034_update_explosions_and_bank6"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB584",
+      "kind": "function",
+      "label": "mg_b034_update_timed_explosions"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB618",
+      "kind": "function",
+      "label": "mg_b034_vram_cursor_add_offset"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB622",
+      "kind": "function",
+      "label": "mg_b034_clear_rect_room_tiles_and_queue"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB658",
+      "kind": "function",
+      "label": "mg_b034_vram_queue_terminate_at"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB65E",
+      "kind": "function",
+      "label": "mg_b034_clear_room_tiles_and_queue_vram"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB6AA",
+      "kind": "function",
+      "label": "mg_b034_check_laser_or_blast_player_hit"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB7C1",
+      "kind": "function",
+      "label": "mg_b034_update_pattern_hazards_and_bank6"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB7C7",
+      "kind": "function",
+      "label": "mg_b034_update_random_hazards_and_bank6"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB7D7",
+      "kind": "function",
+      "label": "mg_b034_update_random_hazard_spawns"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB7E3",
+      "kind": "function",
+      "label": "mg_b034_update_pattern_hazard_spawns"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB914",
+      "kind": "function",
+      "label": "mg_b034_update_bridge_and_restore_bank6"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB91A",
+      "kind": "function",
+      "label": "mg_b034_update_bridge_platforms_and_fall_check"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB99B",
+      "kind": "function",
+      "label": "mg_b034_update_hazard_palette_and_bank6"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB9A1",
+      "kind": "function",
+      "label": "mg_b034_update_hazard_and_palette_cycle"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xB9FF",
+      "kind": "function",
+      "label": "mg_b034_check_room_hazard_zones_and_hits"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xBB28",
+      "kind": "function",
+      "label": "mg_b034_upload_bank00_ppu_stream_bb3a"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xBF3A",
+      "kind": "function",
+      "label": "mg_b034_tick_countdown_and_restore_bank6"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xBF42",
+      "kind": "function",
+      "label": "mg_b034_tick_countdown_timer_and_hud"
+    },
+    {
+      "prgBank": 0,
+      "address": "0xBF67",
+      "kind": "function",
+      "label": "mg_b034_set_timer_state_67"
+    },
+    {
+      "prgBank": 1,
+      "address": "0x99A8",
+      "kind": "function",
+      "label": "mg_b12_b1_write_zp8e_and_halt"
+    },
+    {
+      "prgBank": 1,
+      "address": "0xB7EA",
+      "kind": "function",
+      "label": "mg_b12_b1_upload_ppu_stream_batch"
+    },
+    {
+      "prgBank": 2,
+      "address": "0x9956",
+      "kind": "function",
+      "label": "mg_b12_b2_noop_stub"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xAC54",
+      "kind": "function",
+      "label": "mg_b12_b2_call_2020_twice"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB013",
+      "kind": "function",
+      "label": "mg_b12_run_boss_state_b013_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB019",
+      "kind": "function",
+      "label": "mg_b12_dispatch_boss_state_b019"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB022",
+      "kind": "function",
+      "label": "mg_b12_tick_intro_trigger_and_vram_anim"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB094",
+      "kind": "function",
+      "label": "mg_b12_tick_new_game_intro_sequence"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB0CA",
+      "kind": "function",
+      "label": "mg_b12_stream_six_packets_and_sprites"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB0E3",
+      "kind": "function",
+      "label": "mg_b12_load_counted_packet_by_index"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB0E5",
+      "kind": "function",
+      "label": "mg_b12_load_counted_packet_by_offset"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB105",
+      "kind": "function",
+      "label": "mg_b12_copy_ff_terminated_payload"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB2A2",
+      "kind": "function",
+      "label": "mg_b12_entry_dispatch_boss_b2a2"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB2A5",
+      "kind": "function",
+      "label": "mg_b12_return_to_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB2AA",
+      "kind": "function",
+      "label": "mg_b12_dispatch_boss_state_b2aa"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB2C5",
+      "kind": "function",
+      "label": "mg_b12_tick_boss_phase_every_8_frames"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB2D2",
+      "kind": "function",
+      "label": "mg_b12_choose_boss_chase_direction"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB301",
+      "kind": "function",
+      "label": "mg_b12_move_boss_up_and_check_align"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB33B",
+      "kind": "function",
+      "label": "mg_b12_move_boss_down_and_check_stops"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB353",
+      "kind": "function",
+      "label": "mg_b12_move_boss_left_and_check_stops"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB383",
+      "kind": "function",
+      "label": "mg_b12_boss_patrol_branch_stub"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB39B",
+      "kind": "function",
+      "label": "mg_b12_boss_top_edge_dispatch_stub"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB3E2",
+      "kind": "function",
+      "label": "mg_b12_check_boss_align_every_8_frames"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB3E8",
+      "kind": "function",
+      "label": "mg_b12_check_boss_sprite_and_horiz_align"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB3FC",
+      "kind": "function",
+      "label": "mg_b12_eval_boss_horiz_attack_window"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB438",
+      "kind": "function",
+      "label": "mg_b12_eval_boss_vert_attack_window"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB472",
+      "kind": "function",
+      "label": "mg_b12_step_boss_up_to_top_bound"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB48A",
+      "kind": "function",
+      "label": "mg_b12_step_boss_down_to_bottom_bound"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB49D",
+      "kind": "function",
+      "label": "mg_b12_step_boss_left_to_bound"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB4B0",
+      "kind": "function",
+      "label": "mg_b12_step_boss_right_to_bound"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB4DD",
+      "kind": "function",
+      "label": "mg_b12_run_twin_boss_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB4E3",
+      "kind": "function",
+      "label": "mg_b12_tick_two_boss_actor_slots"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB4F7",
+      "kind": "function",
+      "label": "mg_b12_dispatch_twin_actor_state"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB523",
+      "kind": "function",
+      "label": "mg_b12_shift_zp4c_and_halt_stub"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB52E",
+      "kind": "function",
+      "label": "mg_b12_toggle_actor_idle_sprite_slow"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB546",
+      "kind": "function",
+      "label": "mg_b12_move_actor_toward_center_y"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB556",
+      "kind": "function",
+      "label": "mg_b12_step_actor_down_and_animate"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB56C",
+      "kind": "function",
+      "label": "mg_b12_step_actor_up_and_animate"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB590",
+      "kind": "function",
+      "label": "mg_b12_chase_player_y_and_set_state"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB5BA",
+      "kind": "function",
+      "label": "mg_b12_run_boss_sfx9_dispatch_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB5C0",
+      "kind": "function",
+      "label": "mg_b12_play_periodic_sfx9_and_dispatch"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB5D4",
+      "kind": "function",
+      "label": "mg_b12_init_three_actor_timers"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB65B",
+      "kind": "function",
+      "label": "mg_b12_update_boss_minion_slots"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB6A9",
+      "kind": "function",
+      "label": "mg_b12_run_actor_x_advance_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB6AF",
+      "kind": "function",
+      "label": "mg_b12_advance_actor_x_with_bounds"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB6D0",
+      "kind": "function",
+      "label": "mg_b12_run_orbit_boss_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB6D6",
+      "kind": "function",
+      "label": "mg_b12_set_orbit_center_and_dispatch"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB6F9",
+      "kind": "function",
+      "label": "mg_b12_expand_orbit_ring_phase"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB731",
+      "kind": "function",
+      "label": "mg_b12_rotate_orbit_until_step32"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB74D",
+      "kind": "function",
+      "label": "mg_b12_sweep_orbit_angle_ccw"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB75C",
+      "kind": "function",
+      "label": "mg_b12_step_orbit_sprites_until_zero"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB762",
+      "kind": "function",
+      "label": "mg_b12_contract_orbit_ring_phase"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB78F",
+      "kind": "function",
+      "label": "mg_b12_clear_orbit_sprites_and_reset"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB7A6",
+      "kind": "function",
+      "label": "mg_b12_select_boss_sprite_by_angle"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB7C0",
+      "kind": "function",
+      "label": "mg_b12_update_polar_orbit_slot"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB7C9",
+      "kind": "function",
+      "label": "mg_b12_run_bomb_boss_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB7CF",
+      "kind": "function",
+      "label": "mg_b12_check_drop_bomb_and_dispatch"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB7EA",
+      "kind": "function",
+      "label": "mg_b12_init_b2_bomb_slot_and_dispatch"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB815",
+      "kind": "function",
+      "label": "mg_b12_patrol_left_and_barrage"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB830",
+      "kind": "function",
+      "label": "mg_b12_patrol_right_and_barrage"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB89B",
+      "kind": "function",
+      "label": "mg_b12_fire_pattern_barrage"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB8BA",
+      "kind": "function",
+      "label": "mg_b12_run_four_sprite_drift_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB8C0",
+      "kind": "function",
+      "label": "mg_b12_drift_four_sprites_and_dispatch"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB8E5",
+      "kind": "function",
+      "label": "mg_b12_pick_boss_vert_state_b8e5"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB902",
+      "kind": "function",
+      "label": "mg_b12_step_boss_up_and_check_stops"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB922",
+      "kind": "function",
+      "label": "mg_b12_step_boss_down_and_fire"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB92A",
+      "kind": "function",
+      "label": "mg_b12_hold_stop_and_fire_projectile"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB967",
+      "kind": "function",
+      "label": "mg_b12_cycle_boss_sprite_4e_to_50"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB97D",
+      "kind": "function",
+      "label": "mg_b12_run_four_shots_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB983",
+      "kind": "function",
+      "label": "mg_b12_tick_four_shots_and_dispatch"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB999",
+      "kind": "function",
+      "label": "mg_b12_step_remaining_shot_slots"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB9C0",
+      "kind": "function",
+      "label": "mg_b12_pick_boss_vert_state_b9c0"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xB9DE",
+      "kind": "function",
+      "label": "mg_b12_step_boss_up_to_ba4a_stops"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBA03",
+      "kind": "function",
+      "label": "mg_b12_advance_boss_y_and_aim_shot"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBA0B",
+      "kind": "function",
+      "label": "mg_b12_aim_and_fire_quad_shot"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBA4F",
+      "kind": "function",
+      "label": "mg_b12_compute_aim_direction_to_player"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBBB6",
+      "kind": "function",
+      "label": "mg_b12_spawn_boss_projectile"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBBE1",
+      "kind": "function",
+      "label": "mg_b12_init_projectile_slot_at_offset"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBC11",
+      "kind": "function",
+      "label": "mg_b12_cycle_boss_sprite_from_table"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBC31",
+      "kind": "function",
+      "label": "mg_b12_run_twin_turrets_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBC37",
+      "kind": "function",
+      "label": "mg_b12_update_twin_turret_aim_and_pos"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBC7F",
+      "kind": "function",
+      "label": "mg_b12_set_sprite_slot_id"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBCDF",
+      "kind": "function",
+      "label": "mg_b12_queue_menu_clear_vram_packets"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBD7A",
+      "kind": "function",
+      "label": "mg_b12_handle_menu_cursor_input"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBE0F",
+      "kind": "function",
+      "label": "mg_b12_build_menu_vram_row_packets"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBE73",
+      "kind": "function",
+      "label": "mg_b12_flush_menu_vram_step_and_exit"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBF97",
+      "kind": "function",
+      "label": "mg_b12_check_room_trigger_zone_and_bank6"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBFBE",
+      "kind": "function",
+      "label": "mg_b12_step_cutscene_scroll_and_return"
+    },
+    {
+      "prgBank": 2,
+      "address": "0xBFD0",
+      "kind": "function",
+      "label": "mg_b12_tick_ending_or_title_anim_timer"
+    },
+    {
+      "prgBank": 3,
+      "address": "0x8007",
+      "kind": "function",
+      "label": "mg_b034_bank03_fade_palette_to_room_a5"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB83A",
+      "kind": "function",
+      "label": "mg_b034_bank03_dispatch_actor_state"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB847",
+      "kind": "function",
+      "label": "mg_b034_bank03_advance_actor_sprite_state"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB857",
+      "kind": "function",
+      "label": "mg_b034_bank03_check_actor_player_hit"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB899",
+      "kind": "function",
+      "label": "mg_b034_bank03_tick_actor_anim_frames"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB8BC",
+      "kind": "function",
+      "label": "mg_b034_bank03_noop_stub"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB8C3",
+      "kind": "function",
+      "label": "mg_b034_pw_unpack_to_game_state"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB966",
+      "kind": "function",
+      "label": "mg_b034_pw_decode_byte_with_key"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB973",
+      "kind": "function",
+      "label": "mg_b034_pw_decode_byte_bit4"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB986",
+      "kind": "function",
+      "label": "mg_b034_pw_decode_byte_bit3"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB999",
+      "kind": "function",
+      "label": "mg_b034_pw_dispatch_submode"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB9AA",
+      "kind": "function",
+      "label": "mg_b034_pw_play_enter_sfx_and_clear"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB9AF",
+      "kind": "function",
+      "label": "mg_b034_pw_clear_screen_next_submode"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB9B5",
+      "kind": "function",
+      "label": "mg_b034_pw_init_entry_screen"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xB9F7",
+      "kind": "function",
+      "label": "mg_b034_pw_tick_entry_loop"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBA0A",
+      "kind": "function",
+      "label": "mg_b034_pw_validate_input"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBA50",
+      "kind": "function",
+      "label": "mg_b034_pw_wait_invalid_timer"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBA5B",
+      "kind": "function",
+      "label": "mg_b034_pw_wait_accept_and_start"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBA74",
+      "kind": "function",
+      "label": "mg_b034_pw_queue_invalid_message"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBAB8",
+      "kind": "function",
+      "label": "mg_b034_pw_compute_checksum"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBAC5",
+      "kind": "function",
+      "label": "mg_b034_pw_handle_grid_input"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBB45",
+      "kind": "function",
+      "label": "mg_b034_pw_commit_selected_char"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBB66",
+      "kind": "function",
+      "label": "mg_b034_pw_clear_grid_cursor"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBB6A",
+      "kind": "function",
+      "label": "mg_b034_pw_blink_grid_cursor"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBC25",
+      "kind": "function",
+      "label": "mg_b034_pw_draw_char_grid"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBC7F",
+      "kind": "function",
+      "label": "mg_b034_pw_display_generated_password"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBCA7",
+      "kind": "function",
+      "label": "mg_b034_pw_encode_from_game_state"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBD4D",
+      "kind": "function",
+      "label": "mg_b034_pw_pack_hi_bits_4_3"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBD5F",
+      "kind": "function",
+      "label": "mg_b034_pw_pack_upper_bits"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBD77",
+      "kind": "function",
+      "label": "mg_b034_pw_pack_low5_bits"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBD7E",
+      "kind": "function",
+      "label": "mg_b034_pw_draw_encoded_group"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBDF6",
+      "kind": "function",
+      "label": "mg_b034_ppu_draw_bordered_box"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBE35",
+      "kind": "function",
+      "label": "mg_b034_ppu_set_addr_zp90"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBE40",
+      "kind": "function",
+      "label": "mg_b034_ppu_draw_border_horiz"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBE49",
+      "kind": "function",
+      "label": "mg_b034_ppu_draw_border_vert"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBE57",
+      "kind": "function",
+      "label": "mg_b034_ppu_set_vram_inc_32"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBE60",
+      "kind": "function",
+      "label": "mg_b034_ppu_set_vram_inc_1"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBE6A",
+      "kind": "function",
+      "label": "mg_b034_ppu_box_noop_stub"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBE73",
+      "kind": "function",
+      "label": "mg_b034_bank03_check_room_radio_triggers"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBF44",
+      "kind": "function",
+      "label": "mg_b034_ppu_flush_vram_queue_from"
+    },
+    {
+      "prgBank": 3,
+      "address": "0xBF67",
+      "kind": "function",
+      "label": "mg_b034_ppu_flush_vram_queue"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x801C",
+      "kind": "function",
+      "label": "mg_b034_spawn_room_actors_from_table"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x80F2",
+      "kind": "function",
+      "label": "mg_b034_bank04_check_dir_spawn_bounds"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x8120",
+      "kind": "function",
+      "label": "mg_b034_resolve_room_transition"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x81F7",
+      "kind": "function",
+      "label": "mg_b034_lookup_next_room_id"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x8227",
+      "kind": "function",
+      "label": "mg_b034_init_cutscene_player_sprite"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x8237",
+      "kind": "function",
+      "label": "mg_b034_tick_ending_ascent_cutscene"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x8A3F",
+      "kind": "function",
+      "label": "mg_b034_check_special_room_dir_warp"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x8A58",
+      "kind": "function",
+      "label": "mg_b034_reset_transceiver_cursor"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x8A5F",
+      "kind": "function",
+      "label": "mg_b034_arm_or_reset_transceiver_cursor"
+    },
+    {
+      "prgBank": 4,
+      "address": "0x8A6D",
+      "kind": "function",
+      "label": "mg_b034_tick_transceiver_cursor_warp"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBB91",
+      "kind": "function",
+      "label": "mg_b034_tick_binoculars_room_peek"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBBE1",
+      "kind": "function",
+      "label": "mg_b034_bank04_dispatch_actor_state"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBBEC",
+      "kind": "function",
+      "label": "mg_b034_init_homing_projectile"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBBF8",
+      "kind": "function",
+      "label": "mg_b034_update_patrol_projectile"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBC33",
+      "kind": "function",
+      "label": "mg_b034_step_homing_projectile"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBC53",
+      "kind": "function",
+      "label": "mg_b034_set_projectile_dir_sprite"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBC62",
+      "kind": "function",
+      "label": "mg_b034_check_actor_proximity_trigger"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBC78",
+      "kind": "function",
+      "label": "mg_b034_calc_player_to_actor_delta"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBCB8",
+      "kind": "function",
+      "label": "mg_b034_dialog_dispatch_phase"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBCC7",
+      "kind": "function",
+      "label": "mg_b034_dialog_dispatch_speaker"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBCD2",
+      "kind": "function",
+      "label": "mg_b034_dialog_advance_phase_and_reset"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBCDC",
+      "kind": "function",
+      "label": "mg_b034_dialog_draw_box_frame_6step"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBD74",
+      "kind": "function",
+      "label": "mg_b034_dialog_draw_box_frame_8step"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBDBA",
+      "kind": "function",
+      "label": "mg_b034_dialog_tick_typewriter_and_prompt"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBE27",
+      "kind": "function",
+      "label": "mg_b034_dialog_enter_text_mode"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBE42",
+      "kind": "function",
+      "label": "mg_b034_dialog_clear_4_rows"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBE6A",
+      "kind": "function",
+      "label": "mg_b034_dialog_advance_clear_step"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBE73",
+      "kind": "function",
+      "label": "mg_b034_dialog_enter_text_mode_if_zero"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBE76",
+      "kind": "function",
+      "label": "mg_b034_dialog_clear_6_rows"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBEAC",
+      "kind": "function",
+      "label": "mg_b034_dialog_dispatch_close"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBEB7",
+      "kind": "function",
+      "label": "mg_b034_dialog_reset_state_on_close"
+    },
+    {
+      "prgBank": 4,
+      "address": "0xBF42",
+      "kind": "function",
+      "label": "mg_b034_dialog_restore_bg_and_close"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB658",
+      "kind": "function",
+      "label": "mg_b56_transceiver_state_dispatch"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB66E",
+      "kind": "function",
+      "label": "mg_b56_transceiver_clear_and_reply"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB686",
+      "kind": "function",
+      "label": "mg_b56_transceiver_auto_call_wait"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB6BB",
+      "kind": "function",
+      "label": "mg_b56_transceiver_match_call"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB79A",
+      "kind": "function",
+      "label": "mg_b56_transceiver_stream_dialog"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB7EA",
+      "kind": "function",
+      "label": "mg_b56_transceiver_wait_confirm"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB81F",
+      "kind": "function",
+      "label": "mg_b56_transceiver_clear_dialog_row"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB83A",
+      "kind": "function",
+      "label": "mg_b56_transceiver_fill_vram_tail"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB8D0",
+      "kind": "function",
+      "label": "mg_b56_transceiver_update_freq_hud"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB8F9",
+      "kind": "function",
+      "label": "mg_b56_transceiver_init_screen"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xB95E",
+      "kind": "function",
+      "label": "mg_b56_transceiver_draw_border_col"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBE6A",
+      "kind": "function",
+      "label": "mg_b56_ending_sequence_dispatch"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBE87",
+      "kind": "function",
+      "label": "mg_b56_ending_init_sequence"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBE9A",
+      "kind": "function",
+      "label": "mg_b56_ending_animate_explosion"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBED5",
+      "kind": "function",
+      "label": "mg_b56_ending_open_transceiver"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBEE7",
+      "kind": "function",
+      "label": "mg_b56_ending_wait_before_scan"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBEFF",
+      "kind": "function",
+      "label": "mg_b56_ending_play_first_call"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBF17",
+      "kind": "function",
+      "label": "mg_b56_ending_delay_and_clear"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBF28",
+      "kind": "function",
+      "label": "mg_b56_ending_sweep_freq_to_78"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBF3B",
+      "kind": "function",
+      "label": "mg_b56_ending_play_second_call"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBF3F",
+      "kind": "function",
+      "label": "mg_b56_ending_start_epilogue_bgm"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBF4F",
+      "kind": "function",
+      "label": "mg_b56_ending_play_final_call"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBF60",
+      "kind": "function",
+      "label": "mg_b56_ending_fadeout_tick"
+    },
+    {
+      "prgBank": 5,
+      "address": "0xBF67",
+      "kind": "function",
+      "label": "mg_b56_ending_fadeout_step"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x8188",
+      "kind": "function",
+      "label": "mg_b56_elevator_check_room_entry"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x8D34",
+      "kind": "function",
+      "label": "mg_b56_actor_spawn_alert_icon"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9202",
+      "kind": "function",
+      "label": "mg_b56_audio_write_pulse_regs"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x920B",
+      "kind": "function",
+      "label": "mg_b56_audio_write_pulse_active"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x922B",
+      "kind": "function",
+      "label": "mg_b56_audio_sync_pause_mute"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x927C",
+      "kind": "function",
+      "label": "mg_b56_audio_restore_pulse2"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9295",
+      "kind": "function",
+      "label": "mg_b56_audio_backup_pause_state"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9322",
+      "kind": "function",
+      "label": "mg_b56_audio_ramp_dmc_dac"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x933C",
+      "kind": "anchor",
+      "label": "audio_engine_frame_tick"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9382",
+      "kind": "function",
+      "label": "mg_b56_audio_update_channel"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x93EF",
+      "kind": "function",
+      "label": "mg_b56_audio_step_volume_env"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x940D",
+      "kind": "function",
+      "label": "mg_b56_audio_apply_attenuation"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9449",
+      "kind": "function",
+      "label": "mg_b56_audio_check_note_release"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9484",
+      "kind": "function",
+      "label": "mg_b56_audio_step_vibrato"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x94EA",
+      "kind": "function",
+      "label": "mg_b56_audio_dispatch_seq_mode"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x94ED",
+      "kind": "function",
+      "label": "mg_b56_audio_parse_seq_event"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x95E4",
+      "kind": "function",
+      "label": "mg_b56_audio_play_bgm_note"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x969A",
+      "kind": "function",
+      "label": "mg_b56_audio_advance_seq_ptr"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x96E4",
+      "kind": "function",
+      "label": "mg_b56_audio_exec_control_opcode"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x97DC",
+      "kind": "function",
+      "label": "mg_b56_audio_setup_note_timing"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x985B",
+      "kind": "function",
+      "label": "mg_b56_audio_trigger_sfx_slot1"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9860",
+      "kind": "function",
+      "label": "mg_b56_audio_trigger_sfx_slot2"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9866",
+      "kind": "function",
+      "label": "mg_b56_audio_calc_gate_duration"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9891",
+      "kind": "function",
+      "label": "mg_b56_audio_load_seq_ptr"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x989E",
+      "kind": "function",
+      "label": "mg_b56_audio_read_branch_ptr"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x98AB",
+      "kind": "function",
+      "label": "mg_b56_audio_check_sfx_override"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x98D8",
+      "kind": "function",
+      "label": "mg_b56_audio_reset_apu_channels"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x993B",
+      "kind": "function",
+      "label": "mg_b56_audio_apu_write_delay"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9946",
+      "kind": "function",
+      "label": "mg_b56_audio_write_apu_ctrl"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9956",
+      "kind": "function",
+      "label": "mg_b56_audio_silence_all_channels"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x99A8",
+      "kind": "anchor",
+      "label": "audio_trigger_sound_or_bgm"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x99BB",
+      "kind": "function",
+      "label": "mg_b56_audio_init_track_channels"
+    },
+    {
+      "prgBank": 6,
+      "address": "0x9A96",
+      "kind": "function",
+      "label": "mg_b56_audio_trigger_dmc_sample"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC001",
+      "kind": "vector",
+      "label": "vec_reset"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC06C",
+      "kind": "vector",
+      "label": "vec_nmi_handler"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC0B7",
+      "kind": "vector",
+      "label": "vec_irq_noop"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC0B8",
+      "kind": "anchor",
+      "label": "ppu_init_hardware_and_nmi"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC0C9",
+      "kind": "anchor",
+      "label": "ppu_enable_nmi_and_delay"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC0D7",
+      "kind": "anchor",
+      "label": "ppu_apply_scroll_and_ctrl"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC0F7",
+      "kind": "anchor",
+      "label": "ppu_disable_rendering_and_nmi"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC104",
+      "kind": "anchor",
+      "label": "main_game_state_tick"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC128",
+      "kind": "function",
+      "label": "mg_fxa_call_bank3_b999"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC131",
+      "kind": "function",
+      "label": "mg_fxb_enter_attract_demo_mode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC14B",
+      "kind": "anchor",
+      "label": "enter_transceiver_or_pause_screen"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC163",
+      "kind": "function",
+      "label": "mg_fxa_update_title_cursor_sprite"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC17D",
+      "kind": "function",
+      "label": "mg_fxb_update_attract_demo_mode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC184",
+      "kind": "function",
+      "label": "mg_fxa_reset_to_game_mode_0"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC189",
+      "kind": "anchor",
+      "label": "game_over_and_continue_handler"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC1D6",
+      "kind": "function",
+      "label": "mg_fxa_dispatch_submode_c1d6"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC1E1",
+      "kind": "function",
+      "label": "mg_fxa_start_new_or_continue_game"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC1EB",
+      "kind": "function",
+      "label": "mg_fxa_start_continue_game"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC1F1",
+      "kind": "function",
+      "label": "mg_fxa_start_room_bgm_and_mode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC1F7",
+      "kind": "function",
+      "label": "mg_fxb_tick_demo_and_pause"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC20D",
+      "kind": "function",
+      "label": "mg_fxa_dispatch_submode_c20d"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC21E",
+      "kind": "function",
+      "label": "mg_fxa_load_screen_and_next_submode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC229",
+      "kind": "function",
+      "label": "mg_fxb_load_gameover_or_next_chr"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC23F",
+      "kind": "function",
+      "label": "mg_fxb_start_room_alert_hud"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC253",
+      "kind": "function",
+      "label": "mg_fxa_play_menu_input_sfx"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC26E",
+      "kind": "function",
+      "label": "mg_fxb_queue_alert_overlay_streams"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC299",
+      "kind": "function",
+      "label": "mg_fxb_setup_radio_screen_banks"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC2B3",
+      "kind": "function",
+      "label": "mg_fxb_check_reset_on_a_button"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC2BD",
+      "kind": "function",
+      "label": "mg_fxa_dispatch_submode_c2bd"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC2F5",
+      "kind": "function",
+      "label": "mg_fxb_tick_demo_or_intro_substate"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC313",
+      "kind": "function",
+      "label": "mg_fxb_init_ending_or_special_screen"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC33C",
+      "kind": "function",
+      "label": "mg_fxb_init_room_entities_and_boss"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC348",
+      "kind": "function",
+      "label": "mg_fxa_dispatch_submode_c348"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC353",
+      "kind": "function",
+      "label": "mg_fxb_enter_room_setup"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC365",
+      "kind": "function",
+      "label": "mg_fxa_resume_gameplay_mode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC42B",
+      "kind": "function",
+      "label": "mg_fxa_set_timer_and_next_submode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC42D",
+      "kind": "function",
+      "label": "mg_fxa_advance_game_submode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC430",
+      "kind": "function",
+      "label": "mg_fxa_next_game_mode_with_timer"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC434",
+      "kind": "function",
+      "label": "mg_fxa_advance_game_mode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC43D",
+      "kind": "function",
+      "label": "mg_fxa_enter_game_mode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC445",
+      "kind": "function",
+      "label": "mg_fxa_tick_state_timer"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC458",
+      "kind": "function",
+      "label": "mg_fxa_reset_cutscene_advance_submode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC460",
+      "kind": "function",
+      "label": "mg_fxa_dispatch_cutscene_step"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC486",
+      "kind": "function",
+      "label": "mg_fxb_begin_cutscene_chr_load"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC493",
+      "kind": "function",
+      "label": "mg_fxb_cutscene_chr_or_room_load"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC49B",
+      "kind": "function",
+      "label": "mg_fxa_blank_ppu_mask_shadow"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC4A4",
+      "kind": "function",
+      "label": "mg_fxb_step_cutscene_chr_or_room"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC4AC",
+      "kind": "function",
+      "label": "mg_fxb_cutscene_chr_or_tileset_load"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC4BA",
+      "kind": "function",
+      "label": "mg_fxb_cutscene_decompress_room"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC4CD",
+      "kind": "function",
+      "label": "mg_fxb_advance_cutscene_palette"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC4DE",
+      "kind": "function",
+      "label": "mg_fxa_cutscene_upload_attr_step"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC4E9",
+      "kind": "function",
+      "label": "mg_fxb_finish_room_transition"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC546",
+      "kind": "function",
+      "label": "mg_fxa_update_room_bgm"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC5D3",
+      "kind": "function",
+      "label": "mg_fxa_select_default_area_bgm"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC5E1",
+      "kind": "function",
+      "label": "mg_fxa_play_bgm_if_changed"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC61E",
+      "kind": "function",
+      "label": "mg_fxa_ppu_upload_menu_text_block"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC653",
+      "kind": "function",
+      "label": "mg_fxa_ppu_upload_status_attr_row"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC673",
+      "kind": "anchor",
+      "label": "clear_entity_state_buffer"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC67F",
+      "kind": "function",
+      "label": "mg_fxa_clear_zp_actor_tables"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC689",
+      "kind": "anchor",
+      "label": "mul_u8_u16_shift_add"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC6B7",
+      "kind": "jumpTable",
+      "label": "inline_jump_table_dispatch"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC6D5",
+      "kind": "anchor",
+      "label": "add_u8_to_zp_u16"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC6DF",
+      "kind": "function",
+      "label": "mg_fxa_sub_u8_from_zp_u16"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC6EB",
+      "kind": "function",
+      "label": "mg_fxa_zero_sprite_ram_via_ptr0"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC932",
+      "kind": "trampoline",
+      "label": "unrom_select_bank_0"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC936",
+      "kind": "trampoline",
+      "label": "unrom_select_bank_1"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC93A",
+      "kind": "trampoline",
+      "label": "unrom_select_bank_2"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC93E",
+      "kind": "trampoline",
+      "label": "unrom_select_bank_3"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC942",
+      "kind": "trampoline",
+      "label": "unrom_select_bank_4"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC946",
+      "kind": "trampoline",
+      "label": "unrom_select_bank_5"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC94A",
+      "kind": "trampoline",
+      "label": "unrom_select_bank_6"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC94C",
+      "kind": "trampoline",
+      "label": "unrom_select_bank_index"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC958",
+      "kind": "trampoline",
+      "label": "unrom_restore_active_bank"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC961",
+      "kind": "function",
+      "label": "mg_fxb_queue_room_chr_stream"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC97D",
+      "kind": "function",
+      "label": "mg_fxb_load_room_layout_chunked"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC983",
+      "kind": "function",
+      "label": "mg_fxb_load_room_layout_immediate"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC989",
+      "kind": "anchor",
+      "label": "load_room_bank_and_pointer"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC9B5",
+      "kind": "function",
+      "label": "mg_fxa_load_special_room_chr_slice"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC9EB",
+      "kind": "function",
+      "label": "mg_fxb_upload_room_tileset_chunked"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xC9F7",
+      "kind": "function",
+      "label": "mg_fxb_upload_room_tileset_immediate"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xCA03",
+      "kind": "anchor",
+      "label": "select_room_tileset_bank"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xCA21",
+      "kind": "anchor",
+      "label": "load_zp80_ptr_from_bank_table"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xCA5F",
+      "kind": "function",
+      "label": "mg_fxb_draw_metasprite_to_oam"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xCA9E",
+      "kind": "function",
+      "label": "mg_fxa_emit_metasprite_to_oam"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xCB33",
+      "kind": "function",
+      "label": "mg_fxa_write_oam_sprite_attr"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xCB50",
+      "kind": "function",
+      "label": "mg_fxb_emit_grid_metasprite"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xCBAD",
+      "kind": "function",
+      "label": "mg_fxa_finish_oam_sprite_entry"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD2E2",
+      "kind": "anchor",
+      "label": "build_oam_sprite_list"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD37B",
+      "kind": "function",
+      "label": "mg_fxa_stash_zp_8e_8b"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD390",
+      "kind": "function",
+      "label": "mg_fxb_init_gameplay_hud_and_audio"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD3C0",
+      "kind": "function",
+      "label": "mg_fxa_ppu_stream_default_layout"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD3CF",
+      "kind": "function",
+      "label": "mg_fxa_ppu_stream_screen_reset"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD3D1",
+      "kind": "function",
+      "label": "mg_fxa_ppu_stream_indexed_layout"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD492",
+      "kind": "anchor",
+      "label": "update_bank3_sprite_graphics"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD4A4",
+      "kind": "anchor",
+      "label": "queue_ppu_tile_stream"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD50A",
+      "kind": "function",
+      "label": "mg_fxa_vram_queue_push_byte"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD50C",
+      "kind": "function",
+      "label": "mg_fxa_vram_queue_write_at"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD513",
+      "kind": "anchor",
+      "label": "ppu_upload_zp80_stream_immediate"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD545",
+      "kind": "function",
+      "label": "mg_fxb_ppu_upload_inline_stream"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD57A",
+      "kind": "function",
+      "label": "mg_fxb_upload_inline_ppu_wrapper"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD5A6",
+      "kind": "anchor",
+      "label": "ppu_upload_chunked_nametable_slice"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD647",
+      "kind": "function",
+      "label": "mg_fxb_tick_demo_mode_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD657",
+      "kind": "function",
+      "label": "mg_fxb_start_attract_demo_sequence"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD68B",
+      "kind": "function",
+      "label": "mg_fxb_setup_demo_room_entities"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD691",
+      "kind": "function",
+      "label": "mg_fxb_tick_paused_or_active_frame"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD698",
+      "kind": "function",
+      "label": "mg_fxb_tick_attract_demo_input"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD6B5",
+      "kind": "function",
+      "label": "mg_fxa_apply_demo_joypad_input"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD72C",
+      "kind": "function",
+      "label": "mg_fxb_toggle_gameplay_pause"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD752",
+      "kind": "function",
+      "label": "mg_fxa_init_new_game_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD758",
+      "kind": "function",
+      "label": "mg_fxa_init_continue_game_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD7CE",
+      "kind": "function",
+      "label": "mg_fxa_dispatch_room_init_mode"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD7ED",
+      "kind": "anchor",
+      "label": "gameplay_frame_tick"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD80A",
+      "kind": "function",
+      "label": "mg_fxb_run_gameplay_simulation_tick"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD871",
+      "kind": "function",
+      "label": "mg_fxb_tick_demo_gameplay_frame"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD877",
+      "kind": "function",
+      "label": "mg_fxb_run_cutscene_and_restore_bank6"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD87D",
+      "kind": "function",
+      "label": "mg_fxa_call_bank4_bcb8"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD886",
+      "kind": "function",
+      "label": "mg_fxb_load_transceiver_or_bank3_gfx"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD8A6",
+      "kind": "function",
+      "label": "mg_fxb_update_transceiver_or_exit"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD8E2",
+      "kind": "function",
+      "label": "mg_fxa_queue_hud_and_bank2_digits"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD8EB",
+      "kind": "function",
+      "label": "mg_fxa_trampoline_bank3_d8eb"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD8F1",
+      "kind": "function",
+      "label": "mg_fxa_call_bank0_b3fc"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD8FA",
+      "kind": "function",
+      "label": "mg_fxb_tick_gameplay_and_score_hud"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD903",
+      "kind": "function",
+      "label": "mg_fxa_call_bank5_be6a"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD90E",
+      "kind": "function",
+      "label": "mg_fxb_inc_zp80_ptr"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD920",
+      "kind": "function",
+      "label": "mg_fxb_dec_zp88_ptr_nonzero"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD930",
+      "kind": "function",
+      "label": "mg_fxb_decompress_room_layout"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xD9D1",
+      "kind": "function",
+      "label": "mg_fxb_expand_room_metatile"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDA17",
+      "kind": "function",
+      "label": "mg_fxa_copy_4bytes_to_zp88"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDA25",
+      "kind": "function",
+      "label": "mg_fxa_load_room_data_ptr"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDA42",
+      "kind": "function",
+      "label": "mg_fxb_check_actor_dir_collision"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDA6A",
+      "kind": "function",
+      "label": "mg_fxb_step_projectile_from_bank6"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDA88",
+      "kind": "function",
+      "label": "mg_fxb_backup_and_clear_actors"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDAB8",
+      "kind": "function",
+      "label": "mg_fxb_update_all_actors"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDAE3",
+      "kind": "function",
+      "label": "mg_fxb_dispatch_actor_slot_behavior"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDB05",
+      "kind": "function",
+      "label": "mg_fxb_dispatch_bank3_actor_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDB10",
+      "kind": "function",
+      "label": "mg_fxb_dispatch_bank4_actor_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDB19",
+      "kind": "function",
+      "label": "mg_fxa_check_special_room_tile"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDB3C",
+      "kind": "function",
+      "label": "mg_fxb_pathfind_actor_to_player"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDBE0",
+      "kind": "function",
+      "label": "mg_fxb_calc_actor_dist_sq"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDC3F",
+      "kind": "function",
+      "label": "mg_fxa_actor_ai_noop_stub"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDC57",
+      "kind": "function",
+      "label": "mg_fxb_update_actor_ai_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDCE8",
+      "kind": "function",
+      "label": "mg_fxa_return_noop"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDCE9",
+      "kind": "function",
+      "label": "mg_fxa_step_actor_patrol_script"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDCF1",
+      "kind": "function",
+      "label": "mg_fxb_step_actor_patrol_script"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDD6E",
+      "kind": "function",
+      "label": "mg_fxa_update_actor_walk_sprite"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDE0C",
+      "kind": "function",
+      "label": "mg_fxa_grant_actor_health_drop"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDE33",
+      "kind": "function",
+      "label": "mg_fxa_enter_actor_alert_spin"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDE40",
+      "kind": "function",
+      "label": "mg_fxa_tick_actor_alert_anim"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDEB9",
+      "kind": "function",
+      "label": "mg_fxb_dispatch_actor_dir_step"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDEC8",
+      "kind": "function",
+      "label": "mg_fxa_move_actor_down_clamped"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDED3",
+      "kind": "function",
+      "label": "mg_fxa_move_actor_up_clamped"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDEDC",
+      "kind": "function",
+      "label": "mg_fxa_move_actor_right_clamped"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDEE7",
+      "kind": "function",
+      "label": "mg_fxa_move_actor_left_clamped"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDEFB",
+      "kind": "function",
+      "label": "mg_fxa_start_actor_pause_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDF0F",
+      "kind": "function",
+      "label": "mg_fxa_tick_actor_pause_look"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDF44",
+      "kind": "function",
+      "label": "mg_fxb_start_actor_chase_step"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDF72",
+      "kind": "function",
+      "label": "mg_fxa_set_actor_script_from_table"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDF7E",
+      "kind": "function",
+      "label": "mg_fxb_update_actor_chase_step"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xDFAD",
+      "kind": "function",
+      "label": "mg_fxb_choose_actor_chase_dir"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE01E",
+      "kind": "function",
+      "label": "mg_fxb_start_actor_patrol_wait"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE038",
+      "kind": "function",
+      "label": "mg_fxb_tick_actor_alert_or_fire"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE05B",
+      "kind": "function",
+      "label": "mg_fxb_update_actor_attack_shot"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE07A",
+      "kind": "function",
+      "label": "mg_fxa_update_actor_projectile"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE16F",
+      "kind": "function",
+      "label": "mg_fxb_tick_player_and_world_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE233",
+      "kind": "function",
+      "label": "mg_fxb_update_player_action_and_sprite"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE3A6",
+      "kind": "function",
+      "label": "mg_fxa_check_room_tile_trigger_sfx"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE407",
+      "kind": "function",
+      "label": "mg_fxa_step_player_one_pixel"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE435",
+      "kind": "function",
+      "label": "mg_fxb_update_player_movement"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE46E",
+      "kind": "function",
+      "label": "mg_fxb_apply_player_dir_step"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE49A",
+      "kind": "function",
+      "label": "mg_fxb_step_player_blocked_push"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE4C2",
+      "kind": "function",
+      "label": "mg_fxa_probe_entity_tile_collision"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE4C8",
+      "kind": "function",
+      "label": "mg_fxb_probe_player_front_tiles"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE55F",
+      "kind": "function",
+      "label": "mg_fxa_sample_room_tile_collision"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE5BF",
+      "kind": "function",
+      "label": "mg_fxb_handle_player_hazard_tile"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE640",
+      "kind": "function",
+      "label": "mg_fxa_apply_sprite_nudge_offset"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE660",
+      "kind": "function",
+      "label": "mg_fxa_tick_player_punch_anim"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE692",
+      "kind": "function",
+      "label": "mg_fxb_check_room_screen_edge_exit"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE77F",
+      "kind": "function",
+      "label": "mg_fxa_place_overlay_sprite_slot1"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE7FE",
+      "kind": "function",
+      "label": "mg_fxb_update_guard_vision_and_alert"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE968",
+      "kind": "function",
+      "label": "mg_fxa_trigger_actor_alert"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE96A",
+      "kind": "function",
+      "label": "mg_fxb_trigger_guard_alert_spot"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xE9C1",
+      "kind": "function",
+      "label": "mg_fxa_scan_actors_trigger_alert"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEA03",
+      "kind": "function",
+      "label": "mg_fxb_update_player_damage_and_blink"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEA38",
+      "kind": "function",
+      "label": "mg_fxb_check_player_actor_overlap"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEB17",
+      "kind": "function",
+      "label": "mg_fxb_load_room_door_table_ptr"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEB3B",
+      "kind": "function",
+      "label": "mg_fxa_check_player_door_entry"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEB5A",
+      "kind": "function",
+      "label": "mg_fxb_check_player_door_or_wall"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEB9B",
+      "kind": "function",
+      "label": "mg_fxb_open_vertical_door"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEBC7",
+      "kind": "function",
+      "label": "mg_fxb_clear_init_mode_and_push"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEBCE",
+      "kind": "function",
+      "label": "mg_fxa_load_zp8c_8d_from_ptr88"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEBD9",
+      "kind": "function",
+      "label": "mg_fxa_advance_door_scan_cursor"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEC39",
+      "kind": "function",
+      "label": "mg_fxa_set_door_exit_trigger"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEC44",
+      "kind": "function",
+      "label": "mg_fxa_advance_door_pos_by_32"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEC52",
+      "kind": "function",
+      "label": "mg_fxa_sub_28_from_zp8d"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEC5A",
+      "kind": "function",
+      "label": "mg_fxa_add_28_to_zp8d"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEC62",
+      "kind": "function",
+      "label": "mg_fxb_open_horizontal_door"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xECC5",
+      "kind": "function",
+      "label": "mg_fxb_finalize_door_vram_update"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xECDE",
+      "kind": "function",
+      "label": "mg_fxa_scan_horizontal_doors"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xECE4",
+      "kind": "function",
+      "label": "mg_fxb_open_elevator_or_gate"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xED72",
+      "kind": "function",
+      "label": "mg_fxb_probe_door_after_step"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xED82",
+      "kind": "function",
+      "label": "mg_fxa_check_door_unlock_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEDA8",
+      "kind": "function",
+      "label": "mg_fxb_handle_room_door_or_elevator"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEE22",
+      "kind": "function",
+      "label": "mg_fxa_add_stride_5"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEE33",
+      "kind": "function",
+      "label": "mg_fxb_try_player_attack"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEE7A",
+      "kind": "function",
+      "label": "mg_fxa_spawn_weapon_slot_7a"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEE9F",
+      "kind": "function",
+      "label": "mg_fxa_deploy_item_7b"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEEBC",
+      "kind": "function",
+      "label": "mg_fxa_fire_equipped_weapon_sfx"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEEF9",
+      "kind": "function",
+      "label": "mg_fxb_try_place_landmine"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEF1F",
+      "kind": "function",
+      "label": "mg_fxa_fire_bullet_with_silencer_sfx"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEF55",
+      "kind": "function",
+      "label": "mg_fxa_play_weapon_or_empty_sfx"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xEF60",
+      "kind": "function",
+      "label": "mg_fxb_spawn_player_projectile"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF082",
+      "kind": "function",
+      "label": "mg_fxb_update_player_weapons_and_bombs"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF0E6",
+      "kind": "function",
+      "label": "mg_fxa_step_projectile_movement"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF162",
+      "kind": "function",
+      "label": "mg_fxa_despawn_current_projectile"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF164",
+      "kind": "function",
+      "label": "mg_fxa_despawn_projectile_slot"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF199",
+      "kind": "function",
+      "label": "mg_fxb_step_active_projectile"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF1ED",
+      "kind": "function",
+      "label": "mg_fxb_check_projectile_collision"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF252",
+      "kind": "function",
+      "label": "mg_fxb_check_explosive_actor_hits"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF2CC",
+      "kind": "function",
+      "label": "mg_fxb_check_projectile_hit_slot"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF335",
+      "kind": "function",
+      "label": "mg_fxb_update_enemy_projectiles"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF365",
+      "kind": "function",
+      "label": "mg_fxa_queue_hud_health_and_rank"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF3D8",
+      "kind": "function",
+      "label": "mg_fxb_init_room_boss_encounter"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF469",
+      "kind": "function",
+      "label": "mg_fxb_update_boss_encounter"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF4AC",
+      "kind": "function",
+      "label": "mg_fxa_is_room_item_uncollected"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF4D7",
+      "kind": "function",
+      "label": "mg_fxb_apply_boss_damage"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF507",
+      "kind": "function",
+      "label": "mg_fxa_store_weapon_or_aux_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF5B7",
+      "kind": "function",
+      "label": "mg_fxb_init_room_hazards_bank0"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF5C0",
+      "kind": "function",
+      "label": "mg_fxa_spawn_room_boss_or_prop"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF642",
+      "kind": "function",
+      "label": "mg_fxb_dispatch_room_gimmick_tick"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF6BA",
+      "kind": "function",
+      "label": "mg_fxa_check_room_hostage_flag"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF74C",
+      "kind": "function",
+      "label": "mg_fxb_update_prisoners_and_objectives"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF89D",
+      "kind": "function",
+      "label": "mg_fxa_count_hostages_and_check_rank"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF923",
+      "kind": "function",
+      "label": "mg_fxa_spawn_room_item_sprites"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xF9E7",
+      "kind": "function",
+      "label": "mg_fxb_check_item_pickup"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFB29",
+      "kind": "function",
+      "label": "mg_fxa_collect_supply_item"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFB98",
+      "kind": "function",
+      "label": "mg_fxb_dispatch_cutscene_or_ending"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFBBE",
+      "kind": "function",
+      "label": "mg_fxb_load_pause_menu_graphics"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFBEA",
+      "kind": "anchor",
+      "label": "switch_bank6_and_play_sound"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFCB4",
+      "kind": "function",
+      "label": "mg_fxb_reset_ram_for_demo"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFCB8",
+      "kind": "function",
+      "label": "mg_fxb_init_new_game_from_title"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFCC9",
+      "kind": "function",
+      "label": "mg_fxb_clear_ram_and_enable_nmi"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFF00",
+      "kind": "anchor",
+      "label": "read_joypads_edge_triggered"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFF26",
+      "kind": "anchor",
+      "label": "read_joypads_raw_state"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFF32",
+      "kind": "anchor",
+      "label": "poll_joypad_shift_registers"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFF5D",
+      "kind": "anchor",
+      "label": "handle_pause_start_select_trigger"
+    },
+    {
+      "prgBank": 7,
+      "address": "0xFF91",
+      "kind": "function",
+      "label": "mg_fxa_set_timer_256_frames"
+    }
+  ],
+  "jumpTables": [
+    {
+      "prgBank": 7,
+      "dispatcherAddress": "0xC6B7",
+      "notes": "inline_jump_table_dispatch: RTS inline jump-table dispatcher"
+    }
+  ],
+  "trampolines": [
+    {
+      "address": "0xC932",
+      "targetBank": 0,
+      "kind": "unromSelectBank"
+    },
+    {
+      "address": "0xC936",
+      "targetBank": 1,
+      "kind": "unromSelectBank"
+    },
+    {
+      "address": "0xC93A",
+      "targetBank": 2,
+      "kind": "unromSelectBank"
+    },
+    {
+      "address": "0xC93E",
+      "targetBank": 3,
+      "kind": "unromSelectBank"
+    },
+    {
+      "address": "0xC942",
+      "targetBank": 4,
+      "kind": "unromSelectBank"
+    },
+    {
+      "address": "0xC946",
+      "targetBank": 5,
+      "kind": "unromSelectBank"
+    },
+    {
+      "address": "0xC94A",
+      "targetBank": 6,
+      "kind": "unromSelectBank"
+    },
+    {
+      "address": "0xC94C",
+      "kind": "unromSelectBankIndex"
+    },
+    {
+      "address": "0xC958",
+      "kind": "unromRestoreActiveBank"
+    },
+    {
+      "address": "0xFFD0",
+      "targetBank": 0,
+      "kind": "unromBankSwitchTable($FFD0-$FFD7)"
+    },
+    {
+      "address": "0xFFD1",
+      "targetBank": 1,
+      "kind": "unromBankSwitchTable($FFD0-$FFD7)"
+    },
+    {
+      "address": "0xFFD2",
+      "targetBank": 2,
+      "kind": "unromBankSwitchTable($FFD0-$FFD7)"
+    },
+    {
+      "address": "0xFFD3",
+      "targetBank": 3,
+      "kind": "unromBankSwitchTable($FFD0-$FFD7)"
+    },
+    {
+      "address": "0xFFD4",
+      "targetBank": 4,
+      "kind": "unromBankSwitchTable($FFD0-$FFD7)"
+    },
+    {
+      "address": "0xFFD5",
+      "targetBank": 5,
+      "kind": "unromBankSwitchTable($FFD0-$FFD7)"
+    },
+    {
+      "address": "0xFFD6",
+      "targetBank": 6,
+      "kind": "unromBankSwitchTable($FFD0-$FFD7)"
+    },
+    {
+      "address": "0xFFD7",
+      "targetBank": 7,
+      "kind": "unromBankSwitchTable($FFD0-$FFD7)"
+    }
+  ],
+  "memoryWatches": [
+    {
+      "regionId": "oam",
+      "startAddress": "0x0200",
+      "lengthBytes": 256
+    },
+    {
+      "regionId": "actors",
+      "startAddress": "0x0300",
+      "lengthBytes": 128
+    },
+    {
+      "regionId": "audio",
+      "startAddress": "0x0380",
+      "lengthBytes": 128
+    }
+  ]
+}

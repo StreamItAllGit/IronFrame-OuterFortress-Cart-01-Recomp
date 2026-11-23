@@ -1,0 +1,55 @@
+{
+  "$schema": "https://schemas.local/manifest.v2.json",
+  "schemaVersion": 2,
+  "manifestType": "installer-manifest",
+  "appId": "ironframe-outerfortress-cart-01",
+  "version": "0.1.0",
+  "updatedAtUtc": "2026-11-23T09:20:00.000Z",
+  "displayName": "IronFrame OuterFortress (Cart) 01",
+  "appTitle": "IronFrame OuterFortress Setup",
+  "publisher": "StreamItAll",
+  "subtitle": "Clean-Room Static Recompilation Module (Cart 01) for reCart & reEngine",
+  "studioName": "StreamItAll",
+  "suiteId": "reEngine",
+  "umbrellaSubpath": "StreamItAll\\reEngine\\games\\IronFrame-OuterFortress-Cart-01",
+  "mainExecutableRelativePath": "IronFrame-OuterFortress-Cart-01.exe",
+  "allowAutoStart": false,
+  "allowLegacyMigration": false,
+  "layoutMode": "single-line",
+  "supportedProfiles": [
+    "lightweight",
+    "full"
+  ],
+  "defaultProfile": "lightweight",
+  "installerDeliveryKind": "onlineSetup",
+  "payloadDownloadUrl": "https://github.com/StreamItAllGit/IronFrame-OuterFortress-Cart-01-Recomp/releases/download/v0.1.0/",
+  "payloadAssets": [
+    {
+      "installProfile": "*",
+      "fileName": "IronFrame-OuterFortress-Cart-01-v0.1.0-win-x64-Portable.zip",
+      "expectedSizeBytes": 1,
+      "expectedSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "theme": {
+    "background": "#0E0E10",
+    "surface": "#18181B",
+    "accent": "#F59E0B",
+    "text": "#ECEFF4",
+    "border": "#3F3F46"
+  },
+  "secondaryPickers": [
+    {
+      "flagName": "--suite-dir",
+      "label": "reEngine Suite Root:",
+      "placeholder": "%LOCALAPPDATA%\\Programs\\StreamItAll\\reEngine",
+      "tooltip": "Parent StreamItAll\\reEngine directory containing reEngine and side-by-side engines."
+    },
+    {
+      "flagName": "--reengine-dir",
+      "label": "reEngine Override:",
+      "placeholder": "%LOCALAPPDATA%\\Programs\\StreamItAll\\reEngine",
+      "tooltip": "Optional explicit reEngine runtime folder resolved ahead of default suite locations."
+    }
+  ]
+}

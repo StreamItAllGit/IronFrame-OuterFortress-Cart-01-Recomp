@@ -1,0 +1,1194 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>reCart.Decomp</name>
+    </assembly>
+    <members>
+        <member name="T:reCart.Decomp.CartDecompPlatformProvider">
+            <summary>
+            Clean-room NES / 6502 implementation of <see cref="T:reEngine.Core.Manifests.IDecompPlatformProvider"/> supporting <c>D0</c>–<c>D5</c> progression,
+            BYO <c>.nes</c>/<c>.fds</c> media intake, read-only Tier R metadata validation, and <c>SixTellDetector</c> enforcement.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.CartDecompPlatformProvider.#ctor">
+            <summary>Initializes a new <see cref="T:reCart.Decomp.CartDecompPlatformProvider"/> instance.</summary>
+        </member>
+        <member name="P:reCart.Decomp.CartDecompPlatformProvider.PlatformId">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Decomp.CartDecompPlatformProvider.DisplayName">
+            <inheritdoc />
+        </member>
+        <member name="P:reCart.Decomp.CartDecompPlatformProvider.MinimumEngineVersion">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Decomp.CartDecompPlatformProvider.RunDecompAsync(reEngine.Core.Decomp.DecompRunOptions,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Decomp.CartDecompPlatformProvider.ValidateCleanRoomOutput(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Decomp.CartDecompPlatformProvider.ValidateCleanRoomPackage(System.String)">
+            <summary>Validates a <c>.decomp</c> package archive or directory against retail ROMs, Corpus leaks, and generated binaries.</summary>
+        </member>
+        <member name="T:reCart.Decomp.D4BuildReportValidator">
+            <summary>
+            Validates <c>d4_build_report.json</c>, <c>d5_byte_match.json</c>, and <c>research.manifest.json</c>
+            across both live Tier R research schemas and Standard 18 <c>D4BuildReport</c> schemas.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.D4BuildReportValidator.ValidateD4BuildReportFile(System.String)">
+            <summary>Validates a <c>d4_build_report.json</c> file on disk without mutating it.</summary>
+        </member>
+        <member name="M:reCart.Decomp.D4BuildReportValidator.ValidateD4BuildReportJson(System.String)">
+            <summary>Validates a <c>d4_build_report.json</c> JSON payload supporting both <c>compilerErrors/parityPassed</c> and <c>compilerErrorCount/compilerFlags/zeroWarningsVerified</c>.</summary>
+        </member>
+        <member name="M:reCart.Decomp.D4BuildReportValidator.ValidateD5ByteMatchFile(System.String)">
+            <summary>Validates a <c>d5_byte_match.json</c> file on disk without mutating it.</summary>
+        </member>
+        <member name="M:reCart.Decomp.D4BuildReportValidator.ValidateD5ByteMatchJson(System.String)">
+            <summary>Validates a <c>d5_byte_match.json</c> JSON payload (<c>passed == true</c>, <c>mismatchedBytes == 0</c>, <c>matchedBinaries &gt; 0</c>).</summary>
+        </member>
+        <member name="M:reCart.Decomp.D4BuildReportValidator.ValidateResearchManifestFile(System.String,System.String)">
+            <summary>Validates a read-only upstream <c>research.manifest.json</c> file on disk.</summary>
+        </member>
+        <member name="M:reCart.Decomp.D4BuildReportValidator.ValidateResearchManifestJson(System.String,System.String)">
+            <summary>Validates an upstream <c>research.manifest.json</c> JSON payload for NES platform, ABI, tiers, gates, and clean-room bounds.</summary>
+        </member>
+        <member name="M:reCart.Decomp.D4ReportSchemaHelpers.BareWarnRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>(?:^|\\s)-w(?:\\s|$)</code><br/>
+            Options:<br/>
+            <code>RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match with 2 alternative expressions.<br/>
+                ○ Match if at the beginning of the string.<br/>
+                ○ Match a whitespace character.<br/>
+            ○ Match the string "-w".<br/>
+            ○ Match with 2 alternative expressions, atomically.<br/>
+                ○ Match a whitespace character.<br/>
+                ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.D4ReportSchemaHelpers.Sha256HexRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>^[0-9a-fA-F]{64}$</code><br/>
+            Options:<br/>
+            <code>RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of the string.<br/>
+            ○ Match a character in the set [0-9A-Fa-f] exactly 64 times.<br/>
+            ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="T:reCart.Decomp.SixTellKind">
+            <summary>
+            Canonical six decompiler craftsmanship tell categories enforced at <c>D4_CleanSource</c>.
+            </summary>
+        </member>
+        <member name="F:reCart.Decomp.SixTellKind.RawDecompilerTokens">
+            <summary>Raw Ghidra/Hex-Rays tokens (undefined*, param_*, CONCAT*, in_*/extraout_*, uVar*/iVar*/pcVar*, FUN_/DAT_).</summary>
+        </member>
+        <member name="F:reCart.Decomp.SixTellKind.BannedWarningSuppression">
+            <summary>Banned warning suppression flags (-Wno-everything, -Wno-all, bare -w) in configs or pragmas.</summary>
+        </member>
+        <member name="F:reCart.Decomp.SixTellKind.SplitFragmentFiles">
+            <summary>Mechanical line-count split fragment filenames matching _*_01.._NN.c or _01.._NN.c.</summary>
+        </member>
+        <member name="F:reCart.Decomp.SixTellKind.LowIdentifierReadability">
+            <summary>Low identifier readability (placeholder locals, Hex-Rays v1/a1 names, SSA clones, or low descriptive ratio).</summary>
+        </member>
+        <member name="F:reCart.Decomp.SixTellKind.MissingModuleHeaderOrComments">
+            <summary>Missing top-of-file module header comment or missing explanatory comments in non-trivial C files.</summary>
+        </member>
+        <member name="F:reCart.Decomp.SixTellKind.AbiMismatch">
+            <summary>NES 6502 / 16-bit ABI mismatch (host 64-bit target, calling conventions, wide MMIO pointer casts, or .h/.c prototype drift).</summary>
+        </member>
+        <member name="T:reCart.Decomp.DecompTellFinding">
+            <summary>
+            Single decompiler tell or build-config finding emitted by <see cref="T:reCart.Decomp.SixTellDetector"/>.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.DecompTellFinding.#ctor(reCart.Decomp.SixTellKind,System.String,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            Single decompiler tell or build-config finding emitted by <see cref="T:reCart.Decomp.SixTellDetector"/>.
+            </summary>
+        </member>
+        <member name="T:reCart.Decomp.SixTellScanResult">
+            <summary>
+            Aggregate outcome of scanning C/header files and build configs through <see cref="T:reCart.Decomp.SixTellDetector"/>.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.SixTellScanResult.#ctor(System.Boolean,System.Int32,System.Collections.Generic.IReadOnlyList{reCart.Decomp.SixTellKind},System.Collections.Generic.IReadOnlyList{reCart.Decomp.DecompTellFinding},System.String)">
+            <summary>
+            Aggregate outcome of scanning C/header files and build configs through <see cref="T:reCart.Decomp.SixTellDetector"/>.
+            </summary>
+        </member>
+        <member name="T:reCart.Decomp.D4BuildReportValidationResult">
+            <summary>
+            Validation outcome for <c>d4_build_report.json</c> supporting both Tier R research schemas and Standard 18 schemas.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.D4BuildReportValidationResult.#ctor(System.Boolean,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String},System.String)">
+            <summary>
+            Validation outcome for <c>d4_build_report.json</c> supporting both Tier R research schemas and Standard 18 schemas.
+            </summary>
+        </member>
+        <member name="T:reCart.Decomp.D5ByteMatchValidationResult">
+            <summary>
+            Validation outcome for <c>d5_byte_match.json</c> verifying 1:1 bank and ROM byte parity.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.D5ByteMatchValidationResult.#ctor(System.Boolean,System.Int32,System.Int32,System.Int64,System.Collections.Generic.IReadOnlyList{System.String},System.String)">
+            <summary>
+            Validation outcome for <c>d5_byte_match.json</c> verifying 1:1 bank and ROM byte parity.
+            </summary>
+        </member>
+        <member name="T:reCart.Decomp.ResearchManifestValidationResult">
+            <summary>
+            Validation outcome for read-only upstream <c>research.manifest.json</c> metadata.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.ResearchManifestValidationResult.#ctor(System.Boolean,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Collections.Generic.IReadOnlyList{System.String},System.String)">
+            <summary>
+            Validation outcome for read-only upstream <c>research.manifest.json</c> metadata.
+            </summary>
+        </member>
+        <member name="T:reCart.Decomp.CartBankIntakeInfo">
+            <summary>
+            Clean-room metadata descriptor for one ROM/FDS/research PRG bank (never embeds retail ROM bytes).
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.CartBankIntakeInfo.#ctor(System.Int32,System.String,System.String,System.String,System.Int32,System.String)">
+            <summary>
+            Clean-room metadata descriptor for one ROM/FDS/research PRG bank (never embeds retail ROM bytes).
+            </summary>
+        </member>
+        <member name="T:reCart.Decomp.CartMediaIntakeSummary">
+            <summary>
+            Clean-room media intake summary produced in memory from BYO <c>.nes</c>/<c>.fds</c> images or upstream research metadata.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.CartMediaIntakeSummary.#ctor(System.String,System.String,System.String,System.UInt16,System.Byte,reCart.Contracts.CartMirroringMode,reCart.Contracts.CartVideoRegionStandard,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyList{reCart.Decomp.CartBankIntakeInfo})">
+            <summary>
+            Clean-room media intake summary produced in memory from BYO <c>.nes</c>/<c>.fds</c> images or upstream research metadata.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.SixTellAnalyzerHelpers.PlaceholderIdentRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>\\b(?:tmp_?\\d+|temp_?\\d+|var_?\\d+|val_?\\d+|arg_?\\d+|ret_val\\d*|work_word|work_acc|status_flags|tmp_val|accum_val|reg_val|slot_val|ctx_val|abi_val|byte_[0-9A-Fa-f]+|word_[0-9A-Fa-f]+|dword_[0-9A-Fa-f]+|off_[0-9A-Fa-f]+|unk_[0-9A-Za-z_]+|fn_\\d+|func_?\\d+)\\b</code><br/>
+            Options:<br/>
+            <code>RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at a word boundary.<br/>
+            ○ Match with 18 alternative expressions.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match 't'.<br/>
+                    ○ Match with 2 alternative expressions.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "mp".<br/>
+                            ○ Match '_' atomically, optionally.<br/>
+                            ○ Match a Unicode digit atomically at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "emp".<br/>
+                            ○ Match '_' atomically, optionally.<br/>
+                            ○ Match a Unicode digit atomically at least once.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "va".<br/>
+                    ○ Match with 2 alternative expressions.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match 'r'.<br/>
+                            ○ Match '_' atomically, optionally.<br/>
+                            ○ Match a Unicode digit atomically at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match 'l'.<br/>
+                            ○ Match '_' atomically, optionally.<br/>
+                            ○ Match a Unicode digit atomically at least once.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "arg".<br/>
+                    ○ Match '_' atomically, optionally.<br/>
+                    ○ Match a Unicode digit atomically at least once.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "ret_val".<br/>
+                    ○ Match a Unicode digit greedily any number of times.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "work_".<br/>
+                    ○ Match with 2 alternative expressions.<br/>
+                        ○ Match the string "word".<br/>
+                        ○ Match the string "acc".<br/>
+                ○ Match the string "status_flags".<br/>
+                ○ Match the string "tmp_val".<br/>
+                ○ Match the string "accum_val".<br/>
+                ○ Match the string "reg_val".<br/>
+                ○ Match the string "slot_val".<br/>
+                ○ Match the string "ctx_val".<br/>
+                ○ Match the string "abi_val".<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "byte_".<br/>
+                    ○ Match a character in the set [0-9A-Fa-f] greedily at least once.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "word_".<br/>
+                    ○ Match a character in the set [0-9A-Fa-f] greedily at least once.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "dword_".<br/>
+                    ○ Match a character in the set [0-9A-Fa-f] greedily at least once.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "off_".<br/>
+                    ○ Match a character in the set [0-9A-Fa-f] greedily at least once.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "unk_".<br/>
+                    ○ Match a character in the set [0-9A-Z_a-z] greedily at least once.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match 'f'.<br/>
+                    ○ Match with 2 alternative expressions.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "n_".<br/>
+                            ○ Match a Unicode digit atomically at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "unc".<br/>
+                            ○ Match '_' atomically, optionally.<br/>
+                            ○ Match a Unicode digit atomically at least once.<br/>
+            ○ Match if at a word boundary.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellAnalyzerHelpers.DeclaredIdentRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>(?:^|[;(,])\\s*(?:const\\s+|volatile\\s+|unsigned\\s+|signed\\s+|register\\s+|static\\s+|struct\\s+)*(?!return\\b|goto\\b|else\\b|case\\b|typedef\\b)[A-Za-z_]\\w*(?:\\s*\\*+)?\\s+([A-Za-z_]\\w*)\\s*(?=[=;,)\\[])</code><br/>
+            Options:<br/>
+            <code>RegexOptions.Multiline | RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match with 2 alternative expressions.<br/>
+                ○ Match if at the beginning of a line.<br/>
+                ○ Match a character in the set [(,;].<br/>
+            ○ Match a whitespace character greedily any number of times.<br/>
+            ○ Loop greedily any number of times.<br/>
+                ○ Match with 6 alternative expressions.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "const".<br/>
+                        ○ Match a whitespace character greedily at least once.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "volatile".<br/>
+                        ○ Match a whitespace character greedily at least once.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "unsigned".<br/>
+                        ○ Match a whitespace character greedily at least once.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "signed".<br/>
+                        ○ Match a whitespace character greedily at least once.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "register".<br/>
+                        ○ Match a whitespace character greedily at least once.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "st".<br/>
+                        ○ Match with 2 alternative expressions.<br/>
+                            ○ Match a sequence of expressions.<br/>
+                                ○ Match the string "atic".<br/>
+                                ○ Match a whitespace character greedily at least once.<br/>
+                            ○ Match a sequence of expressions.<br/>
+                                ○ Match the string "ruct".<br/>
+                                ○ Match a whitespace character greedily at least once.<br/>
+            ○ Zero-width negative lookahead.<br/>
+                ○ Match with 5 alternative expressions, atomically.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "return".<br/>
+                        ○ Match if at a word boundary.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "goto".<br/>
+                        ○ Match if at a word boundary.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "else".<br/>
+                        ○ Match if at a word boundary.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "case".<br/>
+                        ○ Match if at a word boundary.<br/>
+                    ○ Match a sequence of expressions.<br/>
+                        ○ Match the string "typedef".<br/>
+                        ○ Match if at a word boundary.<br/>
+            ○ Match a character in the set [A-Z_a-z].<br/>
+            ○ Match a word character greedily any number of times.<br/>
+            ○ Optional (greedy).<br/>
+                ○ Match a whitespace character atomically any number of times.<br/>
+                ○ Match '*' greedily at least once.<br/>
+            ○ Match a whitespace character atomically at least once.<br/>
+            ○ 1st capture group.<br/>
+                ○ Match a character in the set [A-Z_a-z].<br/>
+                ○ Match a word character atomically any number of times.<br/>
+            ○ Match a whitespace character atomically any number of times.<br/>
+            ○ Zero-width positive lookahead.<br/>
+                ○ Match a character in the set [),;=[].<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellAnalyzerHelpers.SsaNumericSuffixRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>^(?&lt;stem&gt;[A-Za-z_]\\w*?)_(?:0\\d|[2-9]\\d*)$</code><br/>
+            Options:<br/>
+            <code>RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of the string.<br/>
+            ○ "stem" capture group.<br/>
+                ○ Match a character in the set [A-Z_a-z].<br/>
+                ○ Match a word character lazily any number of times.<br/>
+            ○ Match '_'.<br/>
+            ○ Match with 2 alternative expressions.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match '0'.<br/>
+                    ○ Match a Unicode digit.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match a character in the set [2-9].<br/>
+                    ○ Match a Unicode digit atomically any number of times.<br/>
+            ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellAnalyzerHelpers.HexRaysShortVarRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>^[va][1-9]\\d*$</code><br/>
+            Options:<br/>
+            <code>RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of the string.<br/>
+            ○ Match a character in the set [av].<br/>
+            ○ Match a character in the set [1-9].<br/>
+            ○ Match a Unicode digit atomically any number of times.<br/>
+            ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellAnalyzerHelpers.HeaderPrototypeRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>^\\s*(?:extern\\s+)?(?&lt;ret&gt;(?:const\\s+|volatile\\s+|unsigned\\s+|signed\\s+|struct\\s+)*[A-Za-z_]\\w*(?:\\s*\\*+)?)\\s+(?&lt;name&gt;[A-Za-z_]\\w*)\\s*\\((?&lt;params&gt;[^;{}]*)\\)\\s*;</code><br/>
+            Options:<br/>
+            <code>RegexOptions.Multiline | RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of a line.<br/>
+            ○ Match a whitespace character greedily any number of times.<br/>
+            ○ Optional (greedy).<br/>
+                ○ Match the string "extern".<br/>
+                ○ Match a whitespace character greedily at least once.<br/>
+            ○ "ret" capture group.<br/>
+                ○ Loop greedily any number of times.<br/>
+                    ○ Match with 4 alternative expressions.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "const".<br/>
+                            ○ Match a whitespace character greedily at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "volatile".<br/>
+                            ○ Match a whitespace character greedily at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "unsigned".<br/>
+                            ○ Match a whitespace character greedily at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match 's'.<br/>
+                            ○ Match with 2 alternative expressions.<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match the string "igned".<br/>
+                                    ○ Match a whitespace character greedily at least once.<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match the string "truct".<br/>
+                                    ○ Match a whitespace character greedily at least once.<br/>
+                ○ Match a character in the set [A-Z_a-z].<br/>
+                ○ Match a word character greedily any number of times.<br/>
+                ○ Optional (greedy).<br/>
+                    ○ Match a whitespace character atomically any number of times.<br/>
+                    ○ Match '*' greedily at least once.<br/>
+            ○ Match a whitespace character atomically at least once.<br/>
+            ○ "name" capture group.<br/>
+                ○ Match a character in the set [A-Z_a-z].<br/>
+                ○ Match a word character atomically any number of times.<br/>
+            ○ Match a whitespace character atomically any number of times.<br/>
+            ○ Match '('.<br/>
+            ○ "params" capture group.<br/>
+                ○ Match a character in the set [^;{}] greedily any number of times.<br/>
+            ○ Match ')'.<br/>
+            ○ Match a whitespace character atomically any number of times.<br/>
+            ○ Match ';'.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellAnalyzerHelpers.FunctionDefRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>^\\s*(?&lt;qual&gt;(?:static\\s+|inline\\s+|__inline\\s+)*)(?&lt;ret&gt;(?:const\\s+|volatile\\s+|unsigned\\s+|signed\\s+|struct\\s+)*[A-Za-z_]\\w*(?:\\s*\\*+)?)\\s+(?&lt;name&gt;[A-Za-z_]\\w*)\\s*\\((?&lt;params&gt;[^;{}]*)\\)\\s*\\{</code><br/>
+            Options:<br/>
+            <code>RegexOptions.Multiline | RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of a line.<br/>
+            ○ Match a whitespace character greedily any number of times.<br/>
+            ○ "qual" capture group.<br/>
+                ○ Loop greedily any number of times.<br/>
+                    ○ Match with 3 alternative expressions.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "static".<br/>
+                            ○ Match a whitespace character greedily at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "inline".<br/>
+                            ○ Match a whitespace character greedily at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "__inline".<br/>
+                            ○ Match a whitespace character greedily at least once.<br/>
+            ○ "ret" capture group.<br/>
+                ○ Loop greedily any number of times.<br/>
+                    ○ Match with 4 alternative expressions.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "const".<br/>
+                            ○ Match a whitespace character greedily at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "volatile".<br/>
+                            ○ Match a whitespace character greedily at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match the string "unsigned".<br/>
+                            ○ Match a whitespace character greedily at least once.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match 's'.<br/>
+                            ○ Match with 2 alternative expressions.<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match the string "igned".<br/>
+                                    ○ Match a whitespace character greedily at least once.<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match the string "truct".<br/>
+                                    ○ Match a whitespace character greedily at least once.<br/>
+                ○ Match a character in the set [A-Z_a-z].<br/>
+                ○ Match a word character greedily any number of times.<br/>
+                ○ Optional (greedy).<br/>
+                    ○ Match a whitespace character atomically any number of times.<br/>
+                    ○ Match '*' greedily at least once.<br/>
+            ○ Match a whitespace character atomically at least once.<br/>
+            ○ "name" capture group.<br/>
+                ○ Match a character in the set [A-Z_a-z].<br/>
+                ○ Match a word character atomically any number of times.<br/>
+            ○ Match a whitespace character atomically any number of times.<br/>
+            ○ Match '('.<br/>
+            ○ "params" capture group.<br/>
+                ○ Match a character in the set [^;{}] greedily any number of times.<br/>
+            ○ Match ')'.<br/>
+            ○ Match a whitespace character atomically any number of times.<br/>
+            ○ Match '{'.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="T:reCart.Decomp.SixTellDetector">
+            <summary>
+            Inspects C/header source directories and build configs for the 6 canonical decompiler tells at <c>D4_CleanSource</c>.
+            </summary>
+        </member>
+        <member name="M:reCart.Decomp.SixTellDetector.SplitFragmentFileRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>_(?:0[1-9]|[1-9]\\d+)\\.c$</code><br/>
+            Options:<br/>
+            <code>RegexOptions.IgnoreCase | RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match '_'.<br/>
+            ○ Match with 2 alternative expressions.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match '0'.<br/>
+                    ○ Match a character in the set [1-9].<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match a character in the set [1-9].<br/>
+                    ○ Match a Unicode digit atomically at least once.<br/>
+            ○ Match '.'.<br/>
+            ○ Match a character in the set [Cc].<br/>
+            ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellDetector.GhidraBoilerplateRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>/\\*\\s*WARNING:[^\\r\\n]*|^\\s*//\\s*Function:[^\\r\\n]*|^\\s*\\*\\s*@(?:callers|callees)\\s+none\\b</code><br/>
+            Options:<br/>
+            <code>RegexOptions.Multiline | RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match with 3 alternative expressions, atomically.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match the string "/*".<br/>
+                    ○ Match a whitespace character atomically any number of times.<br/>
+                    ○ Match the string "WARNING:".<br/>
+                    ○ Match a character in the set [^\n\r] atomically any number of times.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match if at the beginning of a line.<br/>
+                    ○ Match a whitespace character atomically any number of times.<br/>
+                    ○ Match the string "//".<br/>
+                    ○ Match a whitespace character atomically any number of times.<br/>
+                    ○ Match the string "Function:".<br/>
+                    ○ Match a character in the set [^\n\r] atomically any number of times.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match if at the beginning of a line.<br/>
+                    ○ Match a whitespace character atomically any number of times.<br/>
+                    ○ Match '*'.<br/>
+                    ○ Match a whitespace character atomically any number of times.<br/>
+                    ○ Match the string "@calle".<br/>
+                    ○ Match with 2 alternative expressions.<br/>
+                        ○ Match the string "rs".<br/>
+                        ○ Match the string "es".<br/>
+                    ○ Match a whitespace character atomically at least once.<br/>
+                    ○ Match the string "none".<br/>
+                    ○ Match if at a word boundary.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellDetector.BareWarnFlagRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>(?:^|[\\s"',=\\[])-w(?=$|[\\s"',\\];])</code><br/>
+            Options:<br/>
+            <code>RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match with 2 alternative expressions.<br/>
+                ○ Match if at the beginning of the string.<br/>
+                ○ Match a character in the set ["',=[\s].<br/>
+            ○ Match the string "-w".<br/>
+            ○ Zero-width positive lookahead.<br/>
+                ○ Match with 2 alternative expressions, atomically.<br/>
+                    ○ Match if at the end of the string or if before an ending newline.<br/>
+                    ○ Match a character in the set ["',;]\s].<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellDetector.PragmaWarnSuppressRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>#\\s*pragma\\s+(?:clang|GCC)\\s+diagnostic\\s+ignored\\s+"(?:-Weverything|-Wall|-Wextra)"</code><br/>
+            Options:<br/>
+            <code>RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match '#'.<br/>
+            ○ Match a whitespace character atomically any number of times.<br/>
+            ○ Match the string "pragma".<br/>
+            ○ Match a whitespace character atomically at least once.<br/>
+            ○ Match with 2 alternative expressions.<br/>
+                ○ Match the string "clang".<br/>
+                ○ Match the string "GCC".<br/>
+            ○ Match a whitespace character atomically at least once.<br/>
+            ○ Match the string "diagnostic".<br/>
+            ○ Match a whitespace character atomically at least once.<br/>
+            ○ Match the string "ignored".<br/>
+            ○ Match a whitespace character atomically at least once.<br/>
+            ○ Match the string "\"-W".<br/>
+            ○ Match with 3 alternative expressions.<br/>
+                ○ Match the string "everything".<br/>
+                ○ Match the string "all".<br/>
+                ○ Match the string "extra".<br/>
+            ○ Match '"'.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellDetector.Host64TargetConfigRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>(?:--target=|-target["',\\s-]+|-march=|-mabi=)(?:x86_64|amd64|aarch64|arm64|win64|x64|lp64)\\b|-m64\\b|\\b(?:__x86_64__|_WIN64|__LP64__)\\b</code><br/>
+            Options:<br/>
+            <code>RegexOptions.IgnoreCase | RegexOptions.CultureInvariant</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match with 2 alternative expressions, atomically.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match '-'.<br/>
+                    ○ Match with 2 alternative expressions, atomically.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match with 3 alternative expressions.<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match '-'.<br/>
+                                    ○ Match a character in the set [Tt].<br/>
+                                    ○ Match a character in the set [Aa].<br/>
+                                    ○ Match a character in the set [Rr].<br/>
+                                    ○ Match a character in the set [Gg].<br/>
+                                    ○ Match a character in the set [Ee].<br/>
+                                    ○ Match a character in the set [Tt].<br/>
+                                    ○ Match '='.<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match a character in the set [Tt].<br/>
+                                    ○ Match a character in the set [Aa].<br/>
+                                    ○ Match a character in the set [Rr].<br/>
+                                    ○ Match a character in the set [Gg].<br/>
+                                    ○ Match a character in the set [Ee].<br/>
+                                    ○ Match a character in the set [Tt].<br/>
+                                    ○ Match a character in the set ["',-\s] atomically at least once.<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match a character in the set [Mm].<br/>
+                                    ○ Match a character in the set [Aa].<br/>
+                                    ○ Match with 2 alternative expressions.<br/>
+                                        ○ Match a sequence of expressions.<br/>
+                                            ○ Match a character in the set [Rr].<br/>
+                                            ○ Match a character in the set [Cc].<br/>
+                                            ○ Match a character in the set [Hh].<br/>
+                                            ○ Match '='.<br/>
+                                        ○ Match a sequence of expressions.<br/>
+                                            ○ Match a character in the set [Bb].<br/>
+                                            ○ Match a character in the set [Ii].<br/>
+                                            ○ Match '='.<br/>
+                            ○ Match with 7 alternative expressions.<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match a character in the set [Xx].<br/>
+                                    ○ Match the string "86_64".<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match a character in the set [Aa].<br/>
+                                    ○ Match a character in the set [Mm].<br/>
+                                    ○ Match a character in the set [Dd].<br/>
+                                    ○ Match the string "64".<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match a character in the set [Aa] exactly 2 times.<br/>
+                                    ○ Match a character in the set [Rr].<br/>
+                                    ○ Match a character in the set [Cc].<br/>
+                                    ○ Match a character in the set [Hh].<br/>
+                                    ○ Match the string "64".<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match a character in the set [Aa].<br/>
+                                    ○ Match a character in the set [Rr].<br/>
+                                    ○ Match a character in the set [Mm].<br/>
+                                    ○ Match the string "64".<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match a character in the set [Ww].<br/>
+                                    ○ Match a character in the set [Ii].<br/>
+                                    ○ Match a character in the set [Nn].<br/>
+                                    ○ Match the string "64".<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match a character in the set [Xx].<br/>
+                                    ○ Match the string "64".<br/>
+                                ○ Match a sequence of expressions.<br/>
+                                    ○ Match a character in the set [Ll].<br/>
+                                    ○ Match a character in the set [Pp].<br/>
+                                    ○ Match the string "64".<br/>
+                            ○ Match if at a word boundary.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match a character in the set [Mm].<br/>
+                            ○ Match the string "64".<br/>
+                            ○ Match if at a word boundary.<br/>
+                ○ Match a sequence of expressions.<br/>
+                    ○ Match if at a word boundary.<br/>
+                    ○ Match '_'.<br/>
+                    ○ Match with 3 alternative expressions.<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match '_'.<br/>
+                            ○ Match a character in the set [Xx].<br/>
+                            ○ Match the string "86_64__".<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match a character in the set [Ww].<br/>
+                            ○ Match a character in the set [Ii].<br/>
+                            ○ Match a character in the set [Nn].<br/>
+                            ○ Match the string "64".<br/>
+                        ○ Match a sequence of expressions.<br/>
+                            ○ Match '_'.<br/>
+                            ○ Match a character in the set [Ll].<br/>
+                            ○ Match a character in the set [Pp].<br/>
+                            ○ Match the string "64__".<br/>
+                    ○ Match if at a word boundary.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:reCart.Decomp.SixTellDetector.IsSplitFragmentFileName(System.String)">
+            <summary>Returns <see langword="true"/> if <paramref name="filePath"/> matches a split fragment name (<c>_*_01.._NN.c</c> or <c>_01.._NN.c</c>).</summary>
+        </member>
+        <member name="M:reCart.Decomp.SixTellDetector.ScanDirectory(System.String,System.Boolean)">
+            <summary>Scans a directory of C/header files and build configuration files for all 6 decompiler tells.</summary>
+        </member>
+        <member name="M:reCart.Decomp.SixTellDetector.ScanSourceText(System.String,System.String,System.Boolean)">
+            <summary>Scans a single C or header source text string across all 6 tell families.</summary>
+        </member>
+        <member name="M:reCart.Decomp.SixTellDetector.ScanBuildConfigText(System.String,System.String)">
+            <summary>Scans a build configuration file (<c>.clangd</c>, <c>compile_commands.json</c>, <c>Makefile</c>) for banned suppression flags or host ABI mismatches.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.BareWarnRegex_0">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the BareWarnRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.BareWarnRegex_0.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnRegex_0.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.BareWarnRegex_0.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnRegex_0.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.BareWarnRegex_0.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnRegex_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnRegex_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnRegex_0.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Sha256HexRegex_1">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the Sha256HexRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Sha256HexRegex_1.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Sha256HexRegex_1.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Sha256HexRegex_1.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Sha256HexRegex_1.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Sha256HexRegex_1.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Sha256HexRegex_1.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Sha256HexRegex_1.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Sha256HexRegex_1.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.PlaceholderIdentRegex_2">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the PlaceholderIdentRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.PlaceholderIdentRegex_2.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PlaceholderIdentRegex_2.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.PlaceholderIdentRegex_2.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PlaceholderIdentRegex_2.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.PlaceholderIdentRegex_2.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PlaceholderIdentRegex_2.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PlaceholderIdentRegex_2.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PlaceholderIdentRegex_2.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.DeclaredIdentRegex_3">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the DeclaredIdentRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.DeclaredIdentRegex_3.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.DeclaredIdentRegex_3.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.DeclaredIdentRegex_3.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.DeclaredIdentRegex_3.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.DeclaredIdentRegex_3.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.DeclaredIdentRegex_3.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.DeclaredIdentRegex_3.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.DeclaredIdentRegex_3.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SsaNumericSuffixRegex_4">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the SsaNumericSuffixRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.SsaNumericSuffixRegex_4.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SsaNumericSuffixRegex_4.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SsaNumericSuffixRegex_4.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SsaNumericSuffixRegex_4.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SsaNumericSuffixRegex_4.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SsaNumericSuffixRegex_4.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SsaNumericSuffixRegex_4.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SsaNumericSuffixRegex_4.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.HexRaysShortVarRegex_5">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the HexRaysShortVarRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.HexRaysShortVarRegex_5.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HexRaysShortVarRegex_5.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.HexRaysShortVarRegex_5.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HexRaysShortVarRegex_5.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.HexRaysShortVarRegex_5.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HexRaysShortVarRegex_5.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HexRaysShortVarRegex_5.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HexRaysShortVarRegex_5.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.HeaderPrototypeRegex_6">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the HeaderPrototypeRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.HeaderPrototypeRegex_6.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HeaderPrototypeRegex_6.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.HeaderPrototypeRegex_6.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HeaderPrototypeRegex_6.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.HeaderPrototypeRegex_6.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HeaderPrototypeRegex_6.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HeaderPrototypeRegex_6.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.HeaderPrototypeRegex_6.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.FunctionDefRegex_7">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the FunctionDefRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.FunctionDefRegex_7.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FunctionDefRegex_7.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.FunctionDefRegex_7.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FunctionDefRegex_7.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.FunctionDefRegex_7.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FunctionDefRegex_7.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FunctionDefRegex_7.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.FunctionDefRegex_7.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SplitFragmentFileRegex_8">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the SplitFragmentFileRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.SplitFragmentFileRegex_8.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SplitFragmentFileRegex_8.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SplitFragmentFileRegex_8.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SplitFragmentFileRegex_8.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.SplitFragmentFileRegex_8.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SplitFragmentFileRegex_8.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SplitFragmentFileRegex_8.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.SplitFragmentFileRegex_8.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.GhidraBoilerplateRegex_9">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the GhidraBoilerplateRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.GhidraBoilerplateRegex_9.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.GhidraBoilerplateRegex_9.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.GhidraBoilerplateRegex_9.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.GhidraBoilerplateRegex_9.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.GhidraBoilerplateRegex_9.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.GhidraBoilerplateRegex_9.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.GhidraBoilerplateRegex_9.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.GhidraBoilerplateRegex_9.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.BareWarnFlagRegex_10">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the BareWarnFlagRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.BareWarnFlagRegex_10.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnFlagRegex_10.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.BareWarnFlagRegex_10.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnFlagRegex_10.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.BareWarnFlagRegex_10.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnFlagRegex_10.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnFlagRegex_10.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.BareWarnFlagRegex_10.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.PragmaWarnSuppressRegex_11">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the PragmaWarnSuppressRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.PragmaWarnSuppressRegex_11.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PragmaWarnSuppressRegex_11.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.PragmaWarnSuppressRegex_11.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PragmaWarnSuppressRegex_11.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.PragmaWarnSuppressRegex_11.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PragmaWarnSuppressRegex_11.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PragmaWarnSuppressRegex_11.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.PragmaWarnSuppressRegex_11.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Host64TargetConfigRegex_12">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the Host64TargetConfigRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Host64TargetConfigRegex_12.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Host64TargetConfigRegex_12.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Host64TargetConfigRegex_12.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Host64TargetConfigRegex_12.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Host64TargetConfigRegex_12.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Host64TargetConfigRegex_12.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Host64TargetConfigRegex_12.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Host64TargetConfigRegex_12.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Utilities">
+            <summary>Helper methods used by generated <see cref="T:System.Text.RegularExpressions.Regex"/>-derived implementations.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout">
+            <summary>Default timeout value set in <see cref="T:System.AppContext"/>, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout"/> if none was set.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_hasTimeout">
+            <summary>Whether <see cref="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout"/> is non-infinite.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.IndexOfNonAsciiOrAny_22D18F92F025163C4742BD580F8D73A70954D8BBDFD1A26A604BDD8B1AF12FF0(System.ReadOnlySpan{System.Char})">
+            <summary>Finds the next index of any character that matches a character in the set ["',-=[\s].</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.IndexOfNonAsciiOrAny_2C6A4C392119C799A1B2E2A347E20C73E6DF9162184EC31A0353B8F866791E16(System.ReadOnlySpan{System.Char})">
+            <summary>Finds the next index of any character that matches a character in the set [-\s].</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.IndexOfNonAsciiOrAny_512CD2A9CD68EE1DD31CC1C27B6B4DAD8FFC663CBEF0FE220CD0C2FB140BBE71(System.ReadOnlySpan{System.Char})">
+            <summary>Finds the next index of any character that matches a character in the set [*/\s\s].</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.IndexOfNonAsciiOrAny_87A45E92F919066B7665629B9BEE1D29944FA797F2D569339E3A12FDD33CBB89(System.ReadOnlySpan{System.Char})">
+            <summary>Finds the next index of any character that matches a character in the set [A-Z_a-z\s].</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.IndexOfNonAsciiOrAny_A64818EE8F6A7AB2E87585AE4B4EB04359A4C4EA3383E0E3691393704203C797(System.ReadOnlySpan{System.Char})">
+            <summary>Finds the next index of any character that matches a character in the set [(,;A-Z_a-z\s].</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.IsBoundary(System.ReadOnlySpan{System.Char},System.Int32)">
+            <summary>Determines whether the specified index is a boundary.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.IsWordChar(System.Char)">
+            <summary>Determines whether the character is part of the [\w] set.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.StackPop(System.Int32[],System.Int32@,System.Int32@,System.Int32@)">
+            <summary>Pops 2 values from the backtracking stack.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.StackPush(System.Int32[]@,System.Int32@,System.Int32,System.Int32)">
+            <summary>Pushes 2 values onto the backtracking stack.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.Utilities.StackPush(System.Int32[]@,System.Int32@,System.Int32,System.Int32,System.Int32)">
+            <summary>Pushes 3 values onto the backtracking stack.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_asciiHexDigits">
+            <summary>Supports searching for characters in or not in "0123456789ABCDEFabcdef".</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_asciiWordChars">
+            <summary>Supports searching for characters in or not in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz".</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_ascii_5E80FC00">
+            <summary>Supports searching for characters in or not in "abcdforstuvw".</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_ascii_FFC1FFFF7ACFFFDFFFFFFFF7FFFFFFFF">
+            <summary>Supports searching for characters in or not in "\0\u0001\u0002\u0003\u0004\u0005\u0006\a\b\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f!#$%&amp;()*+./0123456789:;&lt;&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u007f".</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_ascii_FFC1FFFFFE7BFFFFFFFFFFFFFFFFFFFF">
+            <summary>Supports searching for characters in or not in "\0\u0001\u0002\u0003\u0004\u0005\u0006\a\b\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f!\"#$%&amp;'()+,-.0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u007f".</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_ascii_FFC1FFFFFEDFFFFFFFFFFFFFFFFFFFFF">
+            <summary>Supports searching for characters in or not in "\0\u0001\u0002\u0003\u0004\u0005\u0006\a\b\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f!\"#$%&amp;'()*+,./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u007f".</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_ascii_FFC1FFFFFEEEFFF701000078010000F8">
+            <summary>Supports searching for characters in or not in "\0\u0001\u0002\u0003\u0004\u0005\u0006\a\b\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f!\"#$%&amp;')*+-./0123456789:&lt;=&gt;?@[\\]^`{|}~\u007f".</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_ascii_FFC1FFFFFEFFFFFF01000078010000F8">
+            <summary>Supports searching for characters in or not in "\0\u0001\u0002\u0003\u0004\u0005\u0006\a\b\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f!\"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@[\\]^`{|}~\u007f".</summary>
+        </member>
+    </members>
+</doc>

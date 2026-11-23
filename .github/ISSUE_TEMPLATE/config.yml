@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerability Reporting
+    url: https://github.com/StreamItAllGit/IronFrame-OuterFortress-Cart-01-Recomp/security/advisories/new
+    about: Please report security issues, path-traversal findings, or installer trust bugs privately.
+  - name: User Guide & Troubleshooting
+    url: https://github.com/StreamItAllGit/IronFrame-OuterFortress-Cart-01-Recomp/blob/main/Dev/docs/USER_GUIDE.md
+    about: Setup instructions, BYO cartridge SHA-256 verification, and CLI flags.

@@ -1,0 +1,18 @@
+IronFrame OuterFortress (Cart) 01 — Third-Party Licenses
+
+This distribution bundles runtime libraries under their respective open-source licenses:
+
+1. Foundation / reEngine / reCart Runtime Components
+   - Copyright (c) 2026 StreamItAll
+   - License: Mozilla Public License 2.0 (MPL-2.0) / MIT (see app\LICENSE)
+
+2. SDL3 (Simple DirectMedia Layer)
+   - License: zlib License
+   - Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org>
+
+3. ppy.SDL3-CS
+   - License: MIT License
+
+4. 7-Zip Standalone Console / SFX Components (build-time packaging reference only)
+   - License: GNU LGPL v2.1+ with unRAR restriction / BSD-3-Clause
+   - Website: https://www.7-zip.org/

@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>reCart.Compiler</name>
+    </assembly>
+    <members>
+        <member name="T:reCart.Compiler.CleanRoomArchiveValidationResult">
+            <summary>
+            Validation outcome returned by <see cref="M:reCart.Compiler.CleanRoomRecompPackager.ValidateCleanRoomArchive(System.String)"/>.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.CleanRoomArchiveValidationResult.#ctor(System.Boolean,System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String},System.String)">
+            <summary>
+            Validation outcome returned by <see cref="M:reCart.Compiler.CleanRoomRecompPackager.ValidateCleanRoomArchive(System.String)"/>.
+            </summary>
+        </member>
+        <member name="T:reCart.Compiler.CleanRoomRecompPackager">
+            <summary>
+            Produces and strictly validates 3-member clean-room <c>.recomp</c> ZIP packages per Dev Bible Standard 22.
+            </summary>
+        </member>
+        <member name="F:reCart.Compiler.CleanRoomRecompPackager.ManifestEntryName">
+            <summary>Canonical root manifest entry path inside <c>.recomp</c> ZIP archives.</summary>
+        </member>
+        <member name="F:reCart.Compiler.CleanRoomRecompPackager.LiftedSourceEntryName">
+            <summary>Canonical lifted C# source entry path inside <c>.recomp</c> ZIP archives.</summary>
+        </member>
+        <member name="F:reCart.Compiler.CleanRoomRecompPackager.DispatchMetaEntryName">
+            <summary>Canonical dispatch metadata entry path inside 3-member lifted <c>.recomp</c> ZIP archives.</summary>
+        </member>
+        <member name="F:reCart.Compiler.CleanRoomRecompPackager.AotRecipeEntryName">
+            <summary>Canonical clean-room recipe entry path inside 2-member recipe <c>.recomp</c> ZIP archives.</summary>
+        </member>
+        <member name="M:reCart.Compiler.CleanRoomRecompPackager.PackageCleanRoomRecomp(System.ReadOnlySpan{System.Byte},reCart.Contracts.CartPackageManifest,System.String,reCart.Compiler.Lifter6502ToCSharp)">
+            <summary>
+            Lifts <paramref name="romBytes"/> and packs strictly 3 clean-room entries into <paramref name="outputRecompZipPath"/>.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.CleanRoomRecompPackager.PackageCleanRoomRecipeRecomp(reCart.Contracts.CartPackageManifest,reCart.Contracts.CartAotRecipeSpec,System.String)">
+            <summary>
+            Packs strictly 2 clean-room JSON manifests (<c>module.recomp.json</c> and <c>aot-recipe.json</c>)
+            into <paramref name="outputRecompZipPath"/> with zero lifted C#, binaries, or ROM bytes.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.CleanRoomRecompPackager.IsRecipeArchive(System.String)">
+            <summary>Returns <see langword="true"/> when <paramref name="zipPath"/> is a 2-member clean-room recipe archive.</summary>
+        </member>
+        <member name="M:reCart.Compiler.CleanRoomRecompPackager.ValidateCleanRoomArchive(System.String)">
+            <summary>
+            Validates a <c>.recomp</c> archive for clean-room layout (strictly 3-member lifted or 2-member recipe), zero binaries/ROMs, and Zip-Slip safety.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.CleanRoomRecompPackager.AssertValidCleanRoomArchive(System.String)">
+            <summary>
+            Validates <paramref name="zipPath"/> and throws <see cref="T:System.IO.InvalidDataException"/> on any clean-room violation.
+            </summary>
+        </member>
+        <member name="T:reCart.Compiler.ColdAotCacheCompiler">
+            <summary>
+            Implements <see cref="T:reCart.Contracts.ICartCompilerPipeline"/> to validate clean-room <c>.recomp</c> packages, compile
+            lifted C# out-of-process into <c>&lt;dataDir&gt;\cache\</c>, index via <see cref="T:reEngine.Core.Aot.AotCacheManager"/>, and load modules.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.ColdAotCacheCompiler.#ctor">
+            <summary>Initializes a new <see cref="T:reCart.Compiler.ColdAotCacheCompiler"/> using ambient <c>dotnet</c> CLI.</summary>
+        </member>
+        <member name="M:reCart.Compiler.ColdAotCacheCompiler.PackageCleanRoomRecomp(System.ReadOnlySpan{System.Byte},reCart.Contracts.CartPackageManifest,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Compiler.ColdAotCacheCompiler.CompileAndLoadAsync(System.String,System.String,System.String,System.Action{System.String},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:reCart.Compiler.ColdAotCacheCompiler.CompileAndLoadAsync(System.String,System.String,System.String,System.ReadOnlyMemory{System.Byte},System.Action{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Validates a 3-member lifted or 2-member clean-room recipe <c>.recomp</c> package, lifts locally from
+            <paramref name="romBytes"/> when packaging a recipe archive, compiles out-of-process into <c>&lt;dataDir&gt;\cache\</c>, and loads the module.
+            </summary>
+        </member>
+        <member name="T:reCart.Compiler.LiftedBlockDescriptor">
+            <summary>
+            Clean-room metadata descriptor for one statically lifted <c>6502</c> basic block.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.LiftedBlockDescriptor.#ctor(System.UInt32,System.String,System.String,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Clean-room metadata descriptor for one statically lifted <c>6502</c> basic block.
+            </summary>
+        </member>
+        <member name="T:reCart.Compiler.LiftedProgramResult">
+            <summary>
+            Result of statically lifting a cartridge ROM into clean-room C# source and dispatch metadata.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.LiftedProgramResult.#ctor(reCart.Contracts.CartRomHeader,System.String,System.String,System.String,System.Int32,System.UInt32,System.UInt16,System.UInt16,System.UInt16,System.Collections.Generic.IReadOnlyList{reCart.Compiler.LiftedBlockDescriptor},System.Collections.Generic.IReadOnlyList{System.UInt16},System.String,System.String)">
+            <summary>
+            Result of statically lifting a cartridge ROM into clean-room C# source and dispatch metadata.
+            </summary>
+        </member>
+        <member name="T:reCart.Compiler.Lifter6502ToCSharp">
+            <summary>
+            Bank-aware static <c>6502 -&gt; C#</c> control-flow lifter rooted at <c>RESET</c>, <c>NMI</c>, and <c>IRQ</c>.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.Lifter6502ToCSharp.Lift(System.ReadOnlySpan{System.Byte},reCart.Contracts.CartPackageManifest,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.UInt32,System.UInt16}})">
+            <summary>
+            Parses <paramref name="romBytes"/> via <see cref="T:reCart.Contracts.CartRomHeaderParser"/> and statically lifts reachable <c>6502</c> blocks to C#.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.Lifter6502ToCSharp.Lift(System.ReadOnlySpan{System.Byte},reCart.Contracts.CartPackageManifest,System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.UInt32,System.UInt16}},System.Collections.Generic.IReadOnlySet{System.UInt16})">
+            <summary>
+            Parses <paramref name="romBytes"/> via <see cref="T:reCart.Contracts.CartRomHeaderParser"/> and statically lifts reachable <c>6502</c> blocks and inline jump-table targets to C#.
+            </summary>
+        </member>
+        <member name="T:reCart.Compiler.LifterOpcodeEmitter">
+            <summary>
+            Translates lifted <c>6502</c> basic blocks into clean C# source implementing <see cref="T:reCart.Contracts.ICartRecompGameModule"/>.
+            </summary>
+        </member>
+        <member name="T:reCart.Compiler.SyntheticCleanRoomCartPackage">
+            <summary>
+            Clean-room synthetic cartridge ROM bytes, SHA-256 checksum, and matching <see cref="T:reCart.Contracts.CartPackageManifest"/>.
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.SyntheticCleanRoomCartPackage.#ctor(System.Byte[],System.String,reCart.Contracts.CartPackageManifest)">
+            <summary>
+            Clean-room synthetic cartridge ROM bytes, SHA-256 checksum, and matching <see cref="T:reCart.Contracts.CartPackageManifest"/>.
+            </summary>
+        </member>
+        <member name="T:reCart.Compiler.SyntheticCleanRoomCartBuilder">
+            <summary>
+            Constructs the 100% original clean-room <c>ironframe-outerfortress-cart-01</c> 32 KB NROM iNES ROM
+            with tactical background pattern, <c>$4016</c> D-Pad movable bright amber sprite, and audible APU Pulse1 output.
+            </summary>
+        </member>
+        <member name="F:reCart.Compiler.SyntheticCleanRoomCartBuilder.DefaultModuleId">
+            <summary>Canonical clean-room synthetic module identifier.</summary>
+        </member>
+        <member name="M:reCart.Compiler.SyntheticCleanRoomCartBuilder.BuildPackage(System.String)">
+            <summary>
+            Builds the clean-room 32 KB NROM iNES ROM + <see cref="T:reCart.Contracts.CartPackageManifest"/> (<c>mapperId: 0</c>).
+            </summary>
+        </member>
+        <member name="M:reCart.Compiler.SyntheticCleanRoomCartBuilder.CreateRecompPackage(System.String,System.String)">
+            <summary>
+            Builds the synthetic cart and packages it into a strictly 3-member clean-room <c>.recomp</c> archive.
+            </summary>
+        </member>
+        <member name="T:reCart.Compiler.UnliftedPcTrapException">
+            <summary>
+            Fail-closed exception thrown under <see cref="F:reCart.Contracts.CartExecutionTierMode.StaticAotOnly"/> when execution
+            reaches a bank/address that was not statically lifted, preventing silent fallback to <c>interpreterOracle</c>.
+            </summary>
+        </member>
+        <member name="P:reCart.Compiler.UnliftedPcTrapException.PrgBank">
+            <summary>Gets the active switchable PRG bank index at the time of the trap.</summary>
+        </member>
+        <member name="P:reCart.Compiler.UnliftedPcTrapException.Address">
+            <summary>Gets the unlifted 16-bit 6502 program counter address.</summary>
+        </member>
+        <member name="P:reCart.Compiler.UnliftedPcTrapException.ModuleId">
+            <summary>Gets the module identifier raising the fail-closed trap.</summary>
+        </member>
+        <member name="P:reCart.Compiler.UnliftedPcTrapException.ExecutionTier">
+            <summary>Gets the active execution tier enforcing fail-closed execution.</summary>
+        </member>
+        <member name="M:reCart.Compiler.UnliftedPcTrapException.#ctor(System.UInt32,System.UInt16,System.String,reCart.Contracts.CartExecutionTierMode)">
+            <summary>Initializes a new <see cref="T:reCart.Compiler.UnliftedPcTrapException"/> for an unlifted PC dispatch.</summary>
+        </member>
+        <member name="M:reCart.Compiler.UnliftedPcTrapException.#ctor(System.UInt32,System.UInt16,System.String,reCart.Contracts.CartExecutionTierMode,System.String)">
+            <summary>Initializes a new <see cref="T:reCart.Compiler.UnliftedPcTrapException"/> with an explicit diagnostic message.</summary>
+        </member>
+    </members>
+</doc>

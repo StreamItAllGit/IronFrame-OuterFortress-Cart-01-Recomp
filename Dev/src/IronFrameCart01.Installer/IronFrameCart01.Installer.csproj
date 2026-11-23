@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName Condition="'$(InstallerAssemblyName)' != ''">$(InstallerAssemblyName)</AssemblyName>
+    <AssemblyName Condition="'$(InstallerAssemblyName)' == ''">IronFrame-OuterFortress-Cart-01-Setup-v$(Version)-win-x64</AssemblyName>
+    <RootNamespace>IronFrameCart01.Installer</RootNamespace>
+    <ApplicationTitle>IronFrame OuterFortress (Cart) 01 Setup</ApplicationTitle>
+    <ApplicationIcon>..\..\assets\IronFrame-OuterFortress-Cart-01.ico</ApplicationIcon>
+    <InstallerManifestPath Condition="'$(InstallerManifestPath)' == ''">..\..\Installer\installer.manifest.json</InstallerManifestPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' Or '$(IronFrameTestAutomation)' == 'true'">
+    <DefineConstants>$(DefineConstants);IRONFRAME_TEST_AUTOMATION</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="IronFrameCart01.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Foundation.Core">
+      <HintPath>..\..\lib\Foundation.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Foundation.Installer">
+      <HintPath>..\..\lib\Foundation.Installer.dll</HintPath>
+    </Reference>
+    <Reference Include="Foundation.Retro">
+      <HintPath>..\..\lib\Foundation.Retro.dll</HintPath>
+    </Reference>
+    <Reference Include="reEngine.Core">
+      <HintPath>..\..\lib\reEngine.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="reCart.Contracts">
+      <HintPath>..\..\lib\reCart.Contracts.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' Or '$(IronFrameTestAutomation)' == 'true'">
+    <Reference Include="Foundation.Automation">
+      <HintPath>..\..\lib\Foundation.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="Foundation.UI">
+      <HintPath>..\..\lib\Foundation.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="$(InstallerManifestPath)" LogicalName="installer.manifest.json" />
+    <EmbeddedResource Include="..\..\assets\IronFrame-OuterFortress-Cart-01.ico" LogicalName="IronFrameCart01.Installer.Assets.icon.ico" />
+    <EmbeddedResource Include="..\..\assets\IronFrame-OuterFortress-Cart-01.png" LogicalName="IronFrameCart01.Installer.Assets.logo.png" />
+    <EmbeddedResource Include="$(InstallerPayloadZip)" LogicalName="IronFrameCart01.Installer.Embedded.payload.zip" Condition="'$(InstallerPayloadZip)' != '' And Exists('$(InstallerPayloadZip)')" />
+    <EmbeddedResource Include="$(ReEngineBootstrapGz)" LogicalName="IronFrameCart01.Installer.Embedded.reEngine-Setup.gz" Condition="'$(ReEngineBootstrapGz)' != '' And Exists('$(ReEngineBootstrapGz)')" />
+    <EmbeddedResource Include="$(ReCartBootstrapGz)" LogicalName="IronFrameCart01.Installer.Embedded.reCart-Setup.gz" Condition="'$(ReCartBootstrapGz)' != '' And Exists('$(ReCartBootstrapGz)')" />
+  </ItemGroup>
+
+</Project>
